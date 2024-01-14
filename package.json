@@ -4,12 +4,12 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "start": "astro dev",
+    "test": "npx cypress run",
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "toolbar": "astro preferences disable devToolbar",
-    "format": "prettier --config .prettierrc 'src/**/*.ts' --write"
+    "format": "prettier --config .prettierrc **/*.{js,jsx,ts,tsx,astro} --write"
   },
   "dependencies": {
     "@astrojs/check": "^0.4.1",
@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "cypress": "^13.6.2",
-    "prettier": "^3.2.1"
+    "prettier": "^3.2.1",
+    "prettier-plugin-astro": "^0.12.3"
   }
 }
