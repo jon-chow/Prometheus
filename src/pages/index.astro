@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Card from '../components/Card.tsx';
 ---
 
 <Layout title="Welcome to Astro.">
@@ -7,7 +8,34 @@ import Layout from '../layouts/Layout.astro';
     <div role="grid" class="layout">
       <div class="topbar"></div>
       <div class="main">
-        <div class="sidebar"></div>
+        <div class="sidebar">
+          <ul>
+            <li class="headers">
+              <div class="title">Title</div>
+              <div class="date">Date Added</div>
+              <div class="length">Track Length</div>
+            </li>
+            <div class="divider"></div>
+            <li>
+              <Card
+                icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+                title="JavaScript"
+                type="Song"
+                date="Jan. 05, 2024"
+                length="1:00"
+              />
+            </li>
+            <li>
+              <Card
+                icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg"
+                title="TypeScript"
+                type="Song"
+                date="Jan. 05, 2024"
+                length="1:00"
+              />
+            </li>
+          </ul>
+        </div>
         <div class="resizer"></div>
         <div class="content"></div>
       </div>
@@ -23,14 +51,14 @@ import Layout from '../layouts/Layout.astro';
     line-height: 1.6;
 
     .layout {
-      min-width: 100vw;
-      min-height: 100vh;
+      max-width: 100vw;
+      max-height: 100vh;
       display: grid;
       gap: 5px;
       grid-template:
         'topbar' 40px
-        'content' auto
-        'controls' 10dvh / 1fr;
+        'content' calc(100vh - 40px - 8dvh - 10px)
+        'controls' 8dvh / 1fr;
 
       .topbar {
         grid-area: 'topbar';
@@ -43,16 +71,57 @@ import Layout from '../layouts/Layout.astro';
         .sidebar,
         .content {
           display: flex;
-          justify-content: center;
-          align-items: center;
           border-radius: 10px;
           background: #242133;
         }
 
         .sidebar {
+          flex-direction: column;
           width: 20vw;
-          min-width: 10dvw;
-          max-width: 40dvw;
+          min-width: 16dvw;
+          max-width: 30dvw;
+
+          ul {
+            list-style: none;
+            padding: 0;
+            margin: 5px;
+            gap: 5px;
+            overflow-x: hidden;
+            overflow-y: overlay;
+            width: calc(100% - 10px);
+
+            .divider {
+              height: 1px;
+              margin-top: 5px;
+              background: #67679b;
+              opacity: 0.5;
+            }
+
+            li {
+              flex: 1;
+              margin-top: 5px;
+              &:first-child {
+                margin-top: 0;
+              }
+
+              &[class='headers'] {
+                display: flex;
+                font-size: 1.1rem;
+                font-weight: 600;
+                padding: 0 20px;
+                gap: 5px;
+
+                div {
+                  &[class='title'] {
+                    min-width: 220px;
+                  }
+                  &[class='date'] {
+                    min-width: 145px;
+                  }
+                }
+              }
+            }
+          }
         }
         .resizer {
           background: #515497;

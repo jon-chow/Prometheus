@@ -20,6 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const newLeftWidth = ((leftWidth + dx) * 100) / (resizer.parentElement as HTMLElement).getBoundingClientRect().width;
     leftSide.style.width = newLeftWidth + '%';
     document.body.style.cursor = 'col-resize';
+
+    const elements = [...document.getElementsByClassName('date'), ...document.getElementsByClassName('length')];
+    if (newLeftWidth < 18) elements.forEach((element) => ((element as HTMLElement).style.display = 'none'));
+    else elements.forEach((element) => ((element as HTMLElement).style.display = 'block'));
   }
 
   function mouseUpHandler() {
