@@ -8,7 +8,7 @@ import Layout from '../layouts/Layout.astro';
       <div class="topbar"></div>
       <div class="main">
         <div class="sidebar"></div>
-        <div class="resize"></div>
+        <div class="resizer"></div>
         <div class="content"></div>
       </div>
       <div class="controls"></div>
@@ -30,39 +30,46 @@ import Layout from '../layouts/Layout.astro';
       grid-template:
         'topbar' 40px
         'content' auto
-        'controls' 12dvh / 1fr;
+        'controls' 10dvh / 1fr;
 
       .topbar {
         grid-area: 'topbar';
       }
       .main {
         display: flex;
-        flex-direction: row;
         gap: 3px;
         margin: 10px;
 
-        .sidebar {
+        .sidebar,
+        .content {
+          display: flex;
+          justify-content: center;
+          align-items: center;
           border-radius: 10px;
           background: #242133;
-          overflow: auto;
-          min-width: 25dvw;
-          max-width: 50dvw;
         }
-        .resize {
-          border-radius: 20px;
+
+        .sidebar {
+          width: 20vw;
+          min-width: 10dvw;
+          max-width: 40dvw;
+        }
+        .resizer {
           background: #515497;
+          border-radius: 20px;
           opacity: 0;
-          width: 5px;
+          margin: auto 0;
+          width: 4px;
+          height: 100%;
           cursor: col-resize;
-          transition: opacity 0.1s ease;
-          &:hover {
-            opacity: 1;
+          transition: opacity 0.2s ease;
+          &:hover,
+          &:active {
+            opacity: 0.75;
           }
         }
         .content {
-          border-radius: 10px;
-          background: #242133;
-          width: 100%;
+          flex: 1;
         }
       }
       .controls {
@@ -71,3 +78,5 @@ import Layout from '../layouts/Layout.astro';
     }
   }
 </style>
+
+<script src="../scripts/resize.ts"></script>
