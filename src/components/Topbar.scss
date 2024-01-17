@@ -1,0 +1,115 @@
+.topbar {
+  grid-area: 'topbar';
+  display: flex;
+  align-items: center;
+  padding: 5px 1dvw;
+  flex: 1;
+  height: 100%;
+  font-size: medium;
+
+  .menu-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    &:hover {
+      background: rgba(193, 138, 245, 0.1);
+    }
+  }
+
+  .header {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+
+    .logo {
+      display: flex;
+      height: 100%;
+      width: auto;
+      font-size: 2rem;
+      color: #f69918;
+    }
+  }
+}
+
+.modal-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  &.hidden {
+    visibility: hidden;
+  }
+
+  .menu {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    background: #28202d;
+    border-radius: 5px;
+    padding: 10px;
+    z-index: 100;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+    &.hidden {
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    &.ellipsis-menu {
+      top: 50px;
+      left: 10px;
+      gap: 10px;
+      width: 200px;
+
+      .menu-item {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 10px;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: medium;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        &:hover {
+          background: rgba(193, 138, 245, 0.1);
+        }
+      }
+    }
+
+    &.bell-menu {
+      top: 50px;
+      right: 10px;
+      gap: 10px;
+      width: 300px;
+
+      .menu-item {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 10px;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: medium;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        &:hover {
+          background: rgba(193, 138, 245, 0.1);
+        }
+      }
+    }
+  }
+}
