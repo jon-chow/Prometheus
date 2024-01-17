@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 
 import Topbar from '../components/Topbar';
+import Bottombar from '../components/Bottombar.tsx';
 import Card from '../components/Card.tsx';
 
 const title = 'Music Player';
@@ -43,7 +44,7 @@ const title = 'Music Player';
         <div class="resizer"></div>
         <div class="content"></div>
       </div>
-      <div class="controls"></div>
+      <Bottombar />
     </div>
   </main>
 </Layout>
@@ -61,8 +62,8 @@ const title = 'Music Player';
       gap: 5px;
       grid-template:
         'topbar' 40px
-        'content' calc(100vh - 40px - 8dvh - 10px)
-        'controls' 8dvh / 1fr;
+        'content' calc(100vh - 40px - 10dvh - 10px)
+        'bottombar' 7dvh / 1fr;
 
       .main {
         display: flex;
@@ -104,7 +105,7 @@ const title = 'Music Player';
                 margin-top: 0;
               }
 
-              &[class='headers'] {
+              &.headers {
                 display: flex;
                 font-size: 1.1rem;
                 font-weight: 600;
@@ -112,10 +113,10 @@ const title = 'Music Player';
                 gap: 5px;
 
                 div {
-                  &[class='title'] {
+                  &.title {
                     min-width: 220px;
                   }
-                  &[class='date'] {
+                  &.date {
                     min-width: 145px;
                   }
                 }
@@ -140,9 +141,6 @@ const title = 'Music Player';
         .content {
           flex: 1;
         }
-      }
-      .controls {
-        grid-area: 'controls';
       }
     }
   }
