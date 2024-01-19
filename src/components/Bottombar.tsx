@@ -39,6 +39,27 @@ export default component$((props: Props) => {
     isMuted.value = !isMuted.value;
   });
 
+  const adjustVolume = $((_: InputEvent, i: HTMLInputElement) => {
+    volume.value = parseInt(i.value) / 100;
+    isMuted.value = (volume.value <= 0);
+  });
+
+  const adjustProgress = $((_: InputEvent, i: HTMLInputElement) => {
+    progress.value = {...progress.value, elapsed: parseInt(i.value)}
+  });
+
+  function formatTime(seconds: number) {
+    return `${Math.floor(seconds / 60)}:${(seconds % 60).toFixed(0).toString().padStart(2, '0')}`;
+  }
+
+  function normalizeProgress(value: number) {
+    return (value / progress.value.total) * 100;
+  }
+
+  function checkVolume() {
+    return isMuted.value ? 0 : (volume.value * 100);
+  }
+
   return (
     <>
       <div class="bottombar">
@@ -75,30 +96,29 @@ export default component$((props: Props) => {
 
             <div class="progress">
               <div class="time-elapsed">
-                {
-                  `${Math.floor(progress.value.elapsed / 60)}:${(progress.value.elapsed % 60).toString().padStart(2, '0')}`
-                }
+                {formatTime(progress.value.elapsed)}
               </div>
-              <div class="progress-bar">
-                <div class="progress-bar-fill"
-                  style={{
-                    width: `${progress.value.elapsed / progress.value.total * 100}%`
-                  }}
-                >
-                  <span class="progress-bar-thumb" />
-                </div>
-              </div>
+              <input
+                class="progress-bar"
+                type="range"
+                min="0"
+                max={progress.value.total}
+                value={progress.value.elapsed}
+                onInput$={adjustProgress}
+                id="progress"
+                style={{
+                  background: `linear-gradient(to right, #7a90ff ${normalizeProgress(progress.value.elapsed)}%, #aaa ${normalizeProgress(progress.value.elapsed)}%)`
+                }}
+              />
               <div class="total-time">
-                {
-                  `${Math.floor(progress.value.total / 60)}:${(progress.value.total % 60).toString().padStart(2, '0')}`
-                }
+                {formatTime(progress.value.total)} 
               </div>
             </div>
           </div>
         </div>
 
         <div class="right">
-          <div class="volume">
+          <div class="volume" title={`${(volume.value * 100).toFixed(0).toString()}%`}>
             <div class="volume-icon" onClick$={toggleMute}>
               {
                 (volume.value === 0 || isMuted.value) ? <BsVolumeMuteFill /> :
@@ -106,15 +126,18 @@ export default component$((props: Props) => {
                 <BsVolumeUpFill />
               }
             </div>
-            <div class="volume-bar">
-              <div class="volume-bar-fill"
-                style={{
-                  width: `${!isMuted.value ? (volume.value * 100) : 0}%`
-                }}
-              >
-                <span class="volume-bar-thumb" />
-              </div>
-            </div>
+            <input
+              class="volume-bar"
+              type="range"
+              min="0"
+              max="100"
+              value={checkVolume()}
+              onInput$={adjustVolume}
+              id="volume"
+              style={{
+                background: `linear-gradient(to right, #7a90ff ${checkVolume()}%, #aaa ${checkVolume()}%)`
+              }}
+            />
           </div>
         </div>
       </div>

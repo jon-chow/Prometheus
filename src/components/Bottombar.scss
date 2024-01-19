@@ -131,6 +131,9 @@
         width: 100%;
 
         .progress-bar {
+          -webkit-appearance: none;
+          appearance: none;
+          outline: none;
           width: 100%;
           top: 1px;
           height: 5px;
@@ -139,35 +142,19 @@
           position: relative;
           cursor: pointer;
           &:hover {
-            .progress-bar-fill {
-              background: #7a90ff;
-
-              .progress-bar-thumb {
-                visibility: visible;
-              }
+            &::-webkit-slider-thumb {
+              visibility: visible;
             }
           }
-
-          .progress-bar-fill {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
+          &::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            visibility: hidden;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
             background: #fff;
-            border-radius: 0.5vh;
-
-            .progress-bar-thumb {
-              position: absolute;
-              top: -6px;
-              left: -6px;
-              width: 12px;
-              height: 12px;
-              border-radius: 50%;
-              background: #fff;
-              visibility: hidden;
-              border: 2px solid #aaa;
-              cursor: pointer;
-            }
+            border: 2px solid #aaa;
           }
         }
 
@@ -205,6 +192,9 @@
       }
 
       .volume-bar {
+        -webkit-appearance: none;
+        appearance: none;
+        outline: none;
         width: 100%;
         top: 1px;
         height: 5px;
@@ -213,35 +203,19 @@
         position: relative;
         cursor: pointer;
         &:hover {
-          .volume-bar-fill {
-            background: #7a90ff;
-
-            .volume-bar-thumb {
-              visibility: visible;
-            }
+          &::-webkit-slider-thumb {
+            visibility: visible;
           }
         }
-
-        .volume-bar-fill {
-          position: absolute;
-          top: 0;
-          left: 0;
-          height: 100%;
+        &::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          visibility: hidden;
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
           background: #fff;
-          border-radius: 0.5vh;
-
-          .volume-bar-thumb {
-            position: absolute;
-            top: -6px;
-            left: -6px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #fff;
-            visibility: hidden;
-            border: 2px solid #aaa;
-            cursor: pointer;
-          }
+          border: 2px solid #aaa;
         }
       }
     }
