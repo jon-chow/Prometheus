@@ -9,7 +9,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "toolbar": "astro preferences disable devToolbar",
-    "format": "prettier --config .prettierrc **/*.{js,jsx,ts,tsx,astro,scss} --write"
+    "format": "prettier --config .prettierrc **/*.{mjs,js,jsx,json,ts,tsx,astro,scss} --write"
   },
   "dependencies": {
     "@astrojs/check": "^0.4.1",

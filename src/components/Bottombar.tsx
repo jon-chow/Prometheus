@@ -1,6 +1,6 @@
 import { component$, useSignal, useStyles$, $ } from '@builder.io/qwik';
 import { BsPlayFill, BsPauseFill, BsSkipForwardFill, BsSkipBackwardFill, BsShuffle, BsRepeat, BsRepeat1, BsVolumeUpFill, BsVolumeDownFill, BsVolumeMuteFill } from '@qwikest/icons/bootstrap';
-import styles from './Bottombar.scss?inline';
+import styles from '@/styles/Bottombar.scss?inline';
 
 interface Props {
 

@@ -1,6 +1,6 @@
 import { component$, useSignal, useStyles$, $ } from '@builder.io/qwik';
 import { FaFireSolid, FaEllipsisSolid, FaBellRegular } from '@qwikest/icons/font-awesome';
-import styles from './Topbar.scss?inline';
+import styles from '@/styles/Topbar.scss?inline';
 
 interface Props {
   header: string;

@@ -1,5 +1,5 @@
 import { component$, useStyles$ } from '@builder.io/qwik';
-import styles from './Card.scss?inline';
+import styles from '@/styles/Card.scss?inline';
 
 interface Props {
   icon: string;
