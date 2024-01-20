@@ -20,7 +20,7 @@ export default component$((props: Props) => {
   const isPlaying = useSignal(false);
   const isMuted = useSignal(false);
 
-  const progress = useSignal({ elapsed: 30, total: 60 }); // replace with async Resource
+  const progress = useSignal({ elapsed: 30 * 1000, total: 60 * 1000 }); // replace with async Resource
   const volume = useSignal(0.5);
 
   const switchRepeatMode = $((e: MouseEvent) => {
@@ -48,7 +48,8 @@ export default component$((props: Props) => {
     progress.value = {...progress.value, elapsed: parseInt(i.value)}
   });
 
-  function formatTime(seconds: number) {
+  function formatTime(milliseconds: number) {
+    const seconds = Math.floor(milliseconds / 1000);
     return `${Math.floor(seconds / 60)}:${(seconds % 60).toFixed(0).toString().padStart(2, '0')}`;
   }
 
