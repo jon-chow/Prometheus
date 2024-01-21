@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-import Topbar from '../components/Topbar';
+import Topbar from '../components/Topbar.tsx';
 import Bottombar from '../components/Bottombar.tsx';
 import Card from '../components/Card.tsx';
 
@@ -11,7 +11,7 @@ const title = 'Music Player';
 <Layout title={title}>
   <main>
     <div role="grid" class="layout">
-      <Topbar header={title} />
+      <Topbar header={title} client:load />
       <div class="main">
         <div class="sidebar">
           <ul>
@@ -39,12 +39,102 @@ const title = 'Music Player';
                 length="01:00"
               />
             </li>
+            <li>
+              <Card
+                icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg"
+                title="Java"
+                type="Song"
+                date="Jan. 05, 2024"
+                length="01:00"
+              />
+            </li>
+            <li>
+              <Card
+                icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+                title="Python"
+                type="Song"
+                date="Jan. 05, 2024"
+                length="01:00"
+              />
+            </li>
+            <li>
+              <Card
+                icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg"
+                title="C#"
+                type="Song"
+                date="Jan. 05, 2024"
+                length="01:00"
+              />
+            </li>
+            <li>
+              <Card
+                icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg"
+                title="C++"
+                type="Song"
+                date="Jan. 05, 2024"
+                length="01:00"
+              />
+            </li>
+            <li>
+              <Card
+                icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/rust/rust-plain.svg"
+                title="Rust"
+                type="Song"
+                date="Jan. 05, 2024"
+                length="01:00"
+              />
+            </li>
+            <li>
+              <Card
+                icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ruby/ruby-original.svg"
+                title="Ruby"
+                type="Song"
+                date="Jan. 05, 2024"
+                length="01:00"
+              />
+            </li>
+            <li>
+              <Card
+                icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg"
+                title="Golang"
+                type="Song"
+                date="Jan. 05, 2024"
+                length="01:00"
+              />
+            </li>
+            <li>
+              <Card
+                icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swift/swift-original.svg"
+                title="Swift"
+                type="Song"
+                date="Jan. 05, 2024"
+                length="01:00"
+              />
+            </li>
+            <li>
+              <Card
+                icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/lua/lua-original.svg"
+                title="Lua"
+                type="Song"
+                date="Jan. 05, 2024"
+                length="01:00"
+              />
+            </li>
+            <li>
+              <Card
+                icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg"
+                title="PHP"
+                type="Song"
+                date="Jan. 05, 2024"
+                length="01:00"
+              />
+            </li>
           </ul>
         </div>
         <div class="resizer"></div>
         <div class="content"></div>
       </div>
-      <Bottombar />
+      <Bottombar client:load />
     </div>
   </main>
 </Layout>

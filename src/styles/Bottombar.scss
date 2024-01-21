@@ -1,7 +1,9 @@
 .bottombar {
   grid-area: bottombar;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-areas: 'left center right';
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 5dvw;
   align-items: center;
   padding: 5px 1dvw;
   flex: 1;
@@ -16,6 +18,10 @@
   }
 
   .left {
+    grid-area: left;
+    display: flex;
+    justify-self: flex-start;
+    padding-left: 10px;
     gap: 15px;
 
     .art-cover {
@@ -84,6 +90,8 @@
   }
 
   .center {
+    grid-area: center;
+
     .player {
       display: flex;
       flex-direction: column;
@@ -171,18 +179,24 @@
   }
 
   .right {
+    display: flex;
+    justify-self: flex-end;
+    grid-area: right;
+    padding-right: 10px;
+
     .volume {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 15px;
-      width: 150px;
 
       .volume-icon {
         display: flex;
         justify-content: center;
         align-items: center;
         font-size: 1.5rem;
+        border: none;
+        background: none;
         color: #aaa;
         cursor: pointer;
         transition: all 0.2s ease;

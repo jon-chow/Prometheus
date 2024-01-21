@@ -1,5 +1,4 @@
-import { component$, useStyles$ } from '@builder.io/qwik';
-import styles from '@/styles/Card.scss?inline';
+import '../styles/Card.scss';
 
 interface Props {
   icon: string;
@@ -9,22 +8,22 @@ interface Props {
   length: string;
 }
 
-export default component$((props: Props) => {
-  useStyles$(styles);
-
+const Card = ({ icon, title, type, date, length }: Props) => {
   return (
     <>
-      <div role="listitem" class='card'>
-        <div class='main-info'>
-          <img role="img" class='icon' src={props.icon} />
-          <div class='desc'>
-            <p class='title'>{props.title}</p>
-            <p class='type'>{props.type}</p>
+      <div role="listitem" className="card">
+        <div className="main-info">
+          <img role="img" className="icon" src={icon} />
+          <div className="desc">
+            <p className="title">{title}</p>
+            <p className="type">{type}</p>
           </div>
         </div>
-        <p class='date'>{props.date}</p>
-        <p class='length'>{props.length}</p>
+        <p className="date">{date}</p>
+        <p className="length">{length}</p>
       </div>
     </>
   );
-});
+};
+
+export default Card;
