@@ -12,33 +12,24 @@ export enum RepeatMode {
 
 interface Props {
   audioRef: React.RefObject<HTMLAudioElement>;
-  tracks: Track[];
-  currentTrack: Track;
-  setCurrentTrack: React.Dispatch<React.SetStateAction<Track>>;
+  handleNextTrack: () => void;
+  handlePrevTrack: () => void;
   isPlaying: boolean;
+  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
   handlePlay: (e: React.MouseEvent<HTMLButtonElement>) => void;
   setProgress: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const Controls = ({ audioRef, tracks, currentTrack, setCurrentTrack, isPlaying, handlePlay, setProgress }: Props) => {
+const Controls = ({ audioRef, handlePrevTrack, handleNextTrack, isPlaying, setIsPlaying, handlePlay, setProgress }: Props) => {
   const [repeatMode, setRepeatMode] = useState(RepeatMode.Off);
   const [shuffleToggled, setShuffleToggled] = useState(false);
-
 
   const handleRepeatMode = (e: React.MouseEvent<HTMLButtonElement>) => {
     setRepeatMode(repeatMode + (1 % Object.keys(RepeatMode).length));
   };
 
   const handleShuffle = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setShuffleToggled(!shuffleToggled);
-  };
-  
-  const nextTrack = () => {
-    // TODO
-  };
-
-  const prevTrack = () => {
-    // TODO
+    setShuffleToggled(toggle => !toggle);
   };
 
   const handleSeek = (e: React.MouseEvent<HTMLButtonElement>, secondsToSkip: number) => {
@@ -57,13 +48,13 @@ const Controls = ({ audioRef, tracks, currentTrack, setCurrentTrack, isPlaying, 
         <button className="seek-backward-button" onClick={(e) => handleSeek(e, -1 * SEEK_VALUE)}>
           <BsArrowCounterclockwise />
         </button>
-        <button className="skip-button" onClick={(e) => prevTrack()}>
+        <button className="skip-button" onClick={(e) => handlePrevTrack()}>
           <BsSkipBackwardFill />
         </button>
         <button className="play-button" onClick={handlePlay}>
           {isPlaying ? <BsPauseFill /> : <BsPlayFill />}
         </button>
-        <button className="skip-button" onClick={(e) => nextTrack()}>
+        <button className="skip-button" onClick={(e) => handleNextTrack()}>
           <BsSkipForwardFill />
         </button>
         <button className="seek-forward-button" onClick={(e) => handleSeek(e, SEEK_VALUE)}>

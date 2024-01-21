@@ -18,7 +18,7 @@ const VolumeSlider = ({ audioRef }: Props) => {
 
   
   const handleMute = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setIsMuted(!isMuted);
+    setIsMuted(muted => !muted);
   };
 
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {

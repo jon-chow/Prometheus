@@ -14,13 +14,26 @@ const Bottombar = ({}: Props) => {
   const progressRef = useRef<HTMLInputElement>(null);
   const playingRef = useRef<number>();
 
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [currentTrack, setCurrentTrack] = useState<Track>(tracks[0]);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
 
   const handlePlay = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setIsPlaying(!isPlaying);
+    setIsPlaying(playing => !playing);
+  };
+  
+  const handleNextTrack = () => {
+    const next = (currentTrackIndex + 1) % tracks.length;
+    setCurrentTrackIndex(next);
+    setCurrentTrack(tracks[next]);
+  };
+
+  const handlePrevTrack = () => {
+    const prev = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+    setCurrentTrackIndex(prev);
+    setCurrentTrack(tracks[prev]);
   };
 
   const repeat = useCallback(() => {
@@ -47,9 +60,14 @@ const Bottombar = ({}: Props) => {
       setDuration(audioRef.current.duration * 1000);
   }, [currentTrack, audioRef, progressRef]);
 
+  const onLoadedMetadata = () => {
+    if (audioRef.current)
+      setDuration(audioRef.current.duration * 1000);
+  }
+
   return (
     <>
-      <audio src={currentTrack.src} ref={audioRef} />
+      <audio src={currentTrack.src} ref={audioRef} onLoadedMetadata={onLoadedMetadata} onEnded={(e) => handleNextTrack()} />
       <div className="bottombar">
         <div className="left">
           <div className="art-cover">
@@ -70,10 +88,10 @@ const Bottombar = ({}: Props) => {
           <div className="player">
             <Controls
               audioRef={audioRef}
-              tracks={tracks}
-              currentTrack={currentTrack}
-              setCurrentTrack={setCurrentTrack}
+              handleNextTrack={handleNextTrack}
+              handlePrevTrack={handlePrevTrack}
               isPlaying={isPlaying}
+              setIsPlaying={setIsPlaying}
               handlePlay={handlePlay}
               setProgress={setProgress}
             />
