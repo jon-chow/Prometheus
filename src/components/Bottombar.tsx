@@ -1,9 +1,9 @@
-import { useState, type SyntheticEvent, type MouseEventHandler } from 'react';
-import { BsPlayFill, BsPauseFill, BsSkipForwardFill, BsSkipBackwardFill, BsShuffle, BsRepeat, BsRepeat1 } from 'react-icons/bs';
-import { IoVolumeHigh, IoVolumeMedium, IoVolumeLow, IoVolumeOff, IoVolumeMute } from 'react-icons/io5';
+import { useCallback, useEffect, useState, useRef } from 'react';
+import { BsPlayFill, BsPauseFill, BsSkipForwardFill, BsSkipBackwardFill, BsShuffle, BsRepeat, BsRepeat1, BsArrowClockwise, BsArrowCounterclockwise } from 'react-icons/bs';
 import '../styles/Bottombar.scss';
 
 import { tracks } from '../data/tracks';
+import VolumeSlider from './VolumeSlider';
 
 interface Props {}
 
@@ -13,162 +13,163 @@ export enum RepeatMode {
   RepeatOne = 2
 }
 
+const SEEK_VALUE = 5;
+
 const Bottombar = ({}: Props) => {
-  const [currentTrack, setCurrentTrack] = useState<number>(0);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const progressRef = useRef<HTMLInputElement>(null);
+  const playingRef = useRef<number>();
+
+  const [currentTrack, setCurrentTrack] = useState<Track>(tracks[0]);
+  const [progress, setProgress] = useState(0);
+  const [duration, setDuration] = useState(0);
   const [repeatMode, setRepeatMode] = useState(RepeatMode.Off);
   const [shuffleToggled, setShuffleToggled] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
 
-  const [progress, setProgress] = useState<Progress>({ elapsed: 30 * 1000, total: 60 * 1000 }); // replace with async Resource
-  const [volume, setVolume] = useState(0.5);
+  const repeat = useCallback(() => {
+    if (audioRef.current && progressRef.current) {
+      const currentTime = audioRef.current.currentTime * 1000;
+      setProgress(currentTime);
+      progressRef.current.value = currentTime.toString();
+      progressRef.current.style.setProperty(
+        '--range-progress',
+        `${(parseInt(progressRef.current.value) / duration) * 100}%`
+      );
 
-  const switchRepeatMode = (e: React.MouseEvent<HTMLButtonElement>) => {
+      playingRef.current = requestAnimationFrame(repeat);
+    }
+  }, [audioRef, duration, progressRef, setProgress]);
+
+  const handleRepeatMode = (e: React.MouseEvent<HTMLButtonElement>) => {
     setRepeatMode(repeatMode + (1 % 3));
   };
 
-  const toggleShuffle = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleShuffle = (e: React.MouseEvent<HTMLButtonElement>) => {
     setShuffleToggled(!shuffleToggled);
   };
 
-  const togglePlay = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handlePlay = (e: React.MouseEvent<HTMLButtonElement>) => {
     setIsPlaying(!isPlaying);
   };
 
-  const toggleMute = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setIsMuted(!isMuted);
+  const handleProgressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (audioRef.current)
+      audioRef.current.currentTime = parseInt(e.target.value) / 100 * audioRef.current.duration;
   };
 
-  const adjustVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (isMuted) setIsMuted(false);
-    setVolume(parseInt(e.target.value) / 100);
-  };
-
-  const adjustProgress = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setProgress({ ...progress, elapsed: parseInt(e.target.value) });
-  };
-
-  const handleTrackEnd = (e: React.SyntheticEvent<HTMLAudioElement>) => {
-    if (repeatMode !== RepeatMode.RepeatOne) nextTrack();
-  };
+  const seek = (e: React.MouseEvent<HTMLButtonElement>, secondsToSkip: number) => {
+    if (audioRef.current)
+      audioRef.current.currentTime += secondsToSkip;
+  }
 
   const nextTrack = () => {
     if (repeatMode === RepeatMode.RepeatOne) return;
 
-    if (shuffleToggled)
-      // TODO: Shuffle
-      setCurrentTrack(Math.floor(Math.random() * tracks.length));
-    else setCurrentTrack((currentTrack + 1) % tracks.length);
+    if (shuffleToggled) {
+      // TODO: Set up shuffle algorithm
+    } else {
+      setCurrentTrack(tracks[(currentTrack.order + 1) % tracks.length]);
+    }
   };
 
   const prevTrack = () => {
     if (repeatMode === RepeatMode.RepeatOne) return;
 
-    if (shuffleToggled)
-      // TODO: Shuffle
-      setCurrentTrack(Math.floor(Math.random() * tracks.length));
-    else setCurrentTrack((currentTrack - 1 + tracks.length) % tracks.length);
+    if (shuffleToggled) {
+      // TODO: Set up shuffle algorithm
+    } else {
+      setCurrentTrack(tracks[(currentTrack.order - 1 + tracks.length) % tracks.length]);
+    }
   };
 
-  function formatTime(milliseconds: number) {
+  function formatTime(milliseconds=0) {
     const seconds = Math.floor(milliseconds / 1000);
     return `${Math.floor(seconds / 60)}:${(seconds % 60).toFixed(0).toString().padStart(2, '0')}`;
   }
 
-  function normalizeProgress(value: number) {
-    return (value / progress.total) * 100;
+  function normalizeProgress() {
+    if (audioRef.current)
+      return (audioRef.current.currentTime / audioRef.current.duration) * 100;
+    return 0;
   }
 
-  function checkVolume() {
-    return isMuted ? 0 : volume * 100;
-  }
+  const onLoadedMetadata = () => {
+    console.log("Test");
+    // const time = audioRef.current.duration * 1000;
+    // setDuration(time);
+    // progressRef.current.max = time.toString();
+    // console.log(formatTime(time));
+  };
 
   return (
     <>
-      <audio src={tracks[currentTrack].src} onEnded={handleTrackEnd} />
+      <audio src={currentTrack.src} ref={audioRef} onLoadedMetadata={onLoadedMetadata} />
       <div className="bottombar">
         <div className="left">
           <div className="art-cover">
-            <img src={tracks[currentTrack].thumbnail.src} />
+            <img src={currentTrack.thumbnail.src} />
             <div className="art-cover-overlay">
-              <button className="play-button" onClick={togglePlay}>
+              <button className="play-button" onClick={handlePlay}>
                 {isPlaying ? <BsPauseFill /> : <BsPlayFill />}
               </button>
             </div>
           </div>
           <div className="song-info">
-            <div className="song-name">{tracks[currentTrack].title}</div>
-            <div className="artist-name">{tracks[currentTrack].author}</div>
+            <div className="song-name">{currentTrack.title}</div>
+            <div className="artist-name">{currentTrack.author}</div>
           </div>
         </div>
 
         <div className="center">
           <div className="player">
             <div className="controls">
-              <button className={'shuffle-button' + (shuffleToggled ? ' enabled' : '')} onClick={toggleShuffle}>
+              <button className={'shuffle-button' + (shuffleToggled ? ' enabled' : '')} onClick={handleShuffle}>
                 <BsShuffle />
+              </button>
+              <button className="seek-backward-button" onClick={(e) => seek(e, -1 * SEEK_VALUE)}>
+                <BsArrowCounterclockwise />
               </button>
               <button className="skip-button" onClick={(e) => prevTrack()}>
                 <BsSkipBackwardFill />
               </button>
-              <button className="play-button" onClick={togglePlay}>
+              <button className="play-button" onClick={handlePlay}>
                 {isPlaying ? <BsPauseFill /> : <BsPlayFill />}
               </button>
               <button className="skip-button" onClick={(e) => nextTrack()}>
                 <BsSkipForwardFill />
               </button>
-              <button className={'repeat-button' + (repeatMode === RepeatMode.Off ? '' : ' enabled')} onClick={switchRepeatMode}>
+              <button className="seek-forward-button" onClick={(e) => seek(e, SEEK_VALUE)}>
+                <BsArrowClockwise />
+              </button>
+              <button className={'repeat-button' + (repeatMode === RepeatMode.Off ? '' : ' enabled')} onClick={handleRepeatMode}>
                 {repeatMode === RepeatMode.RepeatOne ? <BsRepeat1 /> : <BsRepeat />}
               </button>
             </div>
 
             <div className="progress">
-              <div className="time-elapsed">{formatTime(progress.elapsed)}</div>
+              <div className="time-elapsed">
+                {formatTime(progress)}
+              </div>
               <input
                 className="progress-bar"
+                ref={progressRef}
                 type="range"
-                min="0"
-                max={progress.total}
-                value={progress.elapsed}
-                onInput={adjustProgress}
-                id="progress"
+                defaultValue="0"
+                onChange={handleProgressChange}
                 style={{
-                  background: `linear-gradient(to right, #7a90ff ${normalizeProgress(progress.elapsed)}%, #aaa ${normalizeProgress(progress.elapsed)}%)`
+                  background: `linear-gradient(to right, #7a90ff ${normalizeProgress()}%, #aaa ${normalizeProgress()}%)`
                 }}
               />
-              <div className="total-time">{formatTime(progress.total)}</div>
+              <div className="total-time">
+                {formatTime(duration)}
+              </div>
             </div>
           </div>
         </div>
 
         <div className="right">
-          <div className="volume" title={`${(volume * 100).toFixed(0).toString()}%`}>
-            <button className="volume-icon" onClick={toggleMute}>
-              {isMuted ? (
-                <IoVolumeMute />
-              ) : volume === 0 ? (
-                <IoVolumeOff />
-              ) : volume < 0.33 ? (
-                <IoVolumeLow />
-              ) : volume < 0.67 ? (
-                <IoVolumeMedium />
-              ) : (
-                <IoVolumeHigh />
-              )}
-            </button>
-            <input
-              className="volume-bar"
-              type="range"
-              min="0"
-              max="100"
-              value={checkVolume()}
-              onInput={adjustVolume}
-              id="volume"
-              style={{
-                background: `linear-gradient(to right, #7a90ff ${checkVolume()}%, #aaa ${checkVolume()}%)`
-              }}
-            />
-          </div>
+          <VolumeSlider audioRef={audioRef} />
         </div>
       </div>
     </>
