@@ -2,8 +2,10 @@
 import Layout from '../layouts/Layout.astro';
 
 import Topbar from '../components/Topbar.tsx';
+import MainDisplay from '../components/MainDisplay.tsx';
 import Bottombar from '../components/Bottombar.tsx';
-import Card from '../components/Card.tsx';
+
+import { tracks } from '../data/tracks';
 
 const title = 'Music Player';
 ---
@@ -11,130 +13,9 @@ const title = 'Music Player';
 <Layout title={title}>
   <main>
     <div role="grid" class="layout">
-      <Topbar header={title} client:load />
-      <div class="main">
-        <div class="sidebar">
-          <ul>
-            <li class="headers">
-              <div class="title">Title</div>
-              <div class="date">Date Added</div>
-              <div class="length">Track Length</div>
-            </li>
-            <div class="divider"></div>
-            <li>
-              <Card
-                icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
-                title="JavaScript"
-                type="Song"
-                date="Jan. 05, 2024"
-                length="01:00"
-              />
-            </li>
-            <li>
-              <Card
-                icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg"
-                title="TypeScript"
-                type="Song"
-                date="Jan. 05, 2024"
-                length="01:00"
-              />
-            </li>
-            <li>
-              <Card
-                icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg"
-                title="Java"
-                type="Song"
-                date="Jan. 05, 2024"
-                length="01:00"
-              />
-            </li>
-            <li>
-              <Card
-                icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
-                title="Python"
-                type="Song"
-                date="Jan. 05, 2024"
-                length="01:00"
-              />
-            </li>
-            <li>
-              <Card
-                icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg"
-                title="C#"
-                type="Song"
-                date="Jan. 05, 2024"
-                length="01:00"
-              />
-            </li>
-            <li>
-              <Card
-                icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg"
-                title="C++"
-                type="Song"
-                date="Jan. 05, 2024"
-                length="01:00"
-              />
-            </li>
-            <li>
-              <Card
-                icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/rust/rust-plain.svg"
-                title="Rust"
-                type="Song"
-                date="Jan. 05, 2024"
-                length="01:00"
-              />
-            </li>
-            <li>
-              <Card
-                icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ruby/ruby-original.svg"
-                title="Ruby"
-                type="Song"
-                date="Jan. 05, 2024"
-                length="01:00"
-              />
-            </li>
-            <li>
-              <Card
-                icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg"
-                title="Golang"
-                type="Song"
-                date="Jan. 05, 2024"
-                length="01:00"
-              />
-            </li>
-            <li>
-              <Card
-                icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swift/swift-original.svg"
-                title="Swift"
-                type="Song"
-                date="Jan. 05, 2024"
-                length="01:00"
-              />
-            </li>
-            <li>
-              <Card
-                icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/lua/lua-original.svg"
-                title="Lua"
-                type="Song"
-                date="Jan. 05, 2024"
-                length="01:00"
-              />
-            </li>
-            <li>
-              <Card
-                icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg"
-                title="PHP"
-                type="Song"
-                date="Jan. 05, 2024"
-                length="01:00"
-              />
-            </li>
-          </ul>
-        </div>
-        <div class="resizer"></div>
-        <div class="content"></div>
-      </div>
-      <Bottombar client:load />
+      <Topbar client:load header={title} />
+      <MainDisplay client:load tracks={tracks} />
+      <Bottombar client:load tracks={tracks} />
     </div>
   </main>
 </Layout>
@@ -154,86 +35,6 @@ const title = 'Music Player';
         'topbar' 40px
         'content' calc(100vh - 40px - 10dvh - 10px)
         'bottombar' 7dvh / 1fr;
-
-      .main {
-        display: flex;
-        gap: 3px;
-        margin: 10px;
-
-        .sidebar,
-        .content {
-          display: flex;
-          border-radius: 10px;
-          background: #242133;
-        }
-
-        .sidebar {
-          flex-direction: column;
-          width: 27.5vw;
-          min-width: 16dvw;
-          max-width: 30dvw;
-
-          ul {
-            list-style: none;
-            padding: 0;
-            margin: 5px;
-            gap: 5px;
-            overflow-x: hidden;
-            overflow-y: overlay;
-
-            .divider {
-              height: 1px;
-              margin-top: 5px;
-              background: #67679b;
-              opacity: 0.5;
-            }
-
-            li {
-              flex: 1;
-              margin-top: 5px;
-              &:first-child {
-                margin-top: 0;
-              }
-
-              &.headers {
-                display: flex;
-                font-size: 1.1rem;
-                font-weight: 600;
-                padding: 0 20px;
-                gap: 5px;
-
-                div {
-                  &.title {
-                    min-width: 220px;
-                  }
-                  &.date {
-                    min-width: 145px;
-                  }
-                }
-              }
-            }
-          }
-        }
-        .resizer {
-          background: #515497;
-          border-radius: 20px;
-          opacity: 0;
-          margin: auto 0;
-          width: 4px;
-          height: 100%;
-          cursor: col-resize;
-          transition: opacity 0.2s ease;
-          &:hover,
-          &:active {
-            opacity: 0.75;
-          }
-        }
-        .content {
-          flex: 1;
-        }
-      }
     }
   }
 </style>
-
-<script src="../scripts/resize.ts"></script>

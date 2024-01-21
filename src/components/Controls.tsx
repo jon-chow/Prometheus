@@ -1,6 +1,15 @@
 import { useState } from 'react';
-import { BsPlayFill, BsPauseFill, BsSkipForwardFill, BsSkipBackwardFill, BsShuffle, BsRepeat, BsRepeat1, BsArrowClockwise, BsArrowCounterclockwise } from 'react-icons/bs';
-
+import {
+  BsPlayFill,
+  BsPauseFill,
+  BsSkipForwardFill,
+  BsSkipBackwardFill,
+  BsShuffle,
+  BsRepeat,
+  BsRepeat1,
+  BsArrowClockwise,
+  BsArrowCounterclockwise
+} from 'react-icons/bs';
 
 const SEEK_VALUE = 5;
 
@@ -29,7 +38,7 @@ const Controls = ({ audioRef, handlePrevTrack, handleNextTrack, isPlaying, setIs
   };
 
   const handleShuffle = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setShuffleToggled(toggle => !toggle);
+    setShuffleToggled((toggle) => !toggle);
   };
 
   const handleSeek = (e: React.MouseEvent<HTMLButtonElement>, secondsToSkip: number) => {
@@ -37,7 +46,7 @@ const Controls = ({ audioRef, handlePrevTrack, handleNextTrack, isPlaying, setIs
       audioRef.current.currentTime += secondsToSkip;
       setProgress(audioRef.current.currentTime * 1000);
     }
-  }
+  };
 
   return (
     <>
@@ -66,6 +75,6 @@ const Controls = ({ audioRef, handlePrevTrack, handleNextTrack, isPlaying, setIs
       </div>
     </>
   );
-}
+};
 
 export default Controls;

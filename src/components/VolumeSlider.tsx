@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { IoVolumeHigh, IoVolumeMedium, IoVolumeLow, IoVolumeOff, IoVolumeMute } from 'react-icons/io5';
 
 interface Props {
-  audioRef: React.RefObject<HTMLAudioElement>,
+  audioRef: React.RefObject<HTMLAudioElement>;
 }
 
 const VolumeSlider = ({ audioRef }: Props) => {
@@ -16,9 +16,8 @@ const VolumeSlider = ({ audioRef }: Props) => {
     }
   }, [volume, isMuted, audioRef]);
 
-  
   const handleMute = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setIsMuted(muted => !muted);
+    setIsMuted((muted) => !muted);
   };
 
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,6 +60,6 @@ const VolumeSlider = ({ audioRef }: Props) => {
       </div>
     </>
   );
-}
+};
 
 export default VolumeSlider;

@@ -1,7 +1,8 @@
 .card {
-  display: flex;
+  display: grid;
+  grid-template-columns: 200px 150px auto;
   align-items: center;
-  // justify-content: space-between;
+  text-align: start;
   max-height: 50px;
   background: transparent;
   padding: 1rem;

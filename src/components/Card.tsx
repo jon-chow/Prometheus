@@ -4,11 +4,15 @@ interface Props {
   icon: string;
   title: string;
   type: string;
-  date: string;
+  date: Date;
   length: string;
 }
 
 const Card = ({ icon, title, type, date, length }: Props) => {
+  function convertDate(date: Date) {
+    return date.toLocaleDateString('en-US');
+  }
+
   return (
     <>
       <div role="listitem" className="card">
@@ -19,7 +23,7 @@ const Card = ({ icon, title, type, date, length }: Props) => {
             <p className="type">{type}</p>
           </div>
         </div>
-        <p className="date">{date}</p>
+        <p className="date">{convertDate(date)}</p>
         <p className="length">{length}</p>
       </div>
     </>
