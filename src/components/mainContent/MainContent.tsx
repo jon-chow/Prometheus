@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
-import '../styles/MainDisplay.scss';
+import '../../styles/MainContent.scss';
 
-import Card from './Card.tsx';
+import Card from './Card';
 
 interface Props {
   tracks: Track[];
@@ -52,22 +52,34 @@ const MainDisplay = ({ tracks }: Props) => {
         <div className="sidebar" ref={sidebarRef}>
           <ul>
             <li className="headers">
+              <div className="order">#</div>
               <div className="title">Title</div>
               <div className="date">Date Added</div>
               <div className="length">Track Length</div>
             </li>
             <div className="divider"></div>
-            {tracks.map((track) => {
+            {tracks.map((track, i) => {
               return (
                 <li key={track.src}>
-                  <Card icon={track.thumbnail.src} title={track.title} type={track.type} date={track.dateAdded} length={'???'} />
+                  <Card
+                    track={track}
+                    isCurrent={i === 0}
+                  />
                 </li>
               );
             })}
           </ul>
         </div>
         <div className="resizer" ref={resizerRef} />
-        <div className="content">STUFF</div>
+        <div className="content">
+          <div className="background">
+            <img src={tracks[0].thumbnail.src} />
+            <div className="overlay" />
+          </div>
+          <div className="main-content">
+
+          </div>
+        </div>
       </div>
     </>
   );

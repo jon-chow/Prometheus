@@ -6,4 +6,5 @@ interface Track {
   author: string;
   thumbnail: ImageMetadata;
   dateAdded: Date;
+  duration: string;
 }

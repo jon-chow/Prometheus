@@ -1,6 +1,6 @@
 import { useCallback, useState, useEffect, useRef } from 'react';
 import { BsPlayFill, BsPauseFill } from 'react-icons/bs';
-import '../styles/Bottombar.scss';
+import '../../styles/BottomBar.scss';
 
 import VolumeSlider from './VolumeSlider';
 import Controls from './Controls';
@@ -10,7 +10,7 @@ interface Props {
   tracks: Track[];
 }
 
-const Bottombar = ({ tracks }: Props) => {
+const BottomBar = ({ tracks }: Props) => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const progressRef = useRef<HTMLInputElement>(null);
   const playingRef = useRef<number>();
@@ -63,7 +63,7 @@ const Bottombar = ({ tracks }: Props) => {
 
   return (
     <>
-      <audio src={currentTrack.src} ref={audioRef} onLoadedMetadata={onLoadedMetadata} onEnded={(e) => handleNextTrack()} />
+      <audio src={currentTrack.src} ref={audioRef} preload="metadata" onLoadedMetadata={onLoadedMetadata} onEnded={(e) => handleNextTrack()} />
       <div className="bottombar">
         <div className="left">
           <div className="art-cover">
@@ -103,4 +103,4 @@ const Bottombar = ({ tracks }: Props) => {
   );
 };
 
-export default Bottombar;
+export default BottomBar;

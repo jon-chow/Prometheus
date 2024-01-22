@@ -1,17 +1,25 @@
 .card {
   display: grid;
-  grid-template-columns: 200px 150px auto;
+  grid-template-columns: 15px 200px 150px auto;
   align-items: center;
   text-align: start;
   max-height: 50px;
   background: transparent;
-  padding: 1rem;
+  padding: 0.75rem 1rem;
   border-radius: 10px;
   gap: 1rem;
   transition: all 0.2s ease;
   cursor: pointer;
   &:hover {
     background: #3e3a52;
+  }
+
+  &.current {
+    background: #3e3d68;
+  }
+
+  .track-number {
+    font-size: 1.1rem;
   }
 
   .main-info {
@@ -33,13 +41,13 @@
 
       .title {
         line-height: 1;
-        font-size: 1.25rem;
-        font-weight: 600;
+        font-size: 1.2rem;
+        font-weight: 500;
         color: #ffffff;
       }
       .type {
-        font-size: 1rem;
-        font-weight: 500;
+        font-size: 0.9rem;
+        font-weight: 400;
         color: #cccccc;
       }
     }

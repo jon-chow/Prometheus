@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { FaFire, FaEllipsisH, FaBell } from 'react-icons/fa';
-import '../styles/Topbar.scss';
+import '../../styles/TopBar.scss';
 
 interface Props {
   header: string;
 }
 
-const Topbar = ({ header }: Props) => {
+const TopBar = ({ header }: Props) => {
   const [ellipsisMenuToggled, setEllipsisMenuToggled] = useState(false);
   const [bellMenuToggled, setBellMenuToggled] = useState(false);
 
@@ -57,4 +57,4 @@ const Topbar = ({ header }: Props) => {
   );
 };
 
-export default Topbar;
+export default TopBar;
