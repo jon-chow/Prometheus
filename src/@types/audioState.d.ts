@@ -1,14 +1,17 @@
-type Progress = {
-  elapsed: number;
-  total: number;
-};
+declare enum RepeatMode {
+  Off,
+  Track,
+  Playlist
+}
 
 interface IAudioState {
-  currentTrack: number;
+  currentTrackIndex: number;
+  currentTrack: Track | null;
   isPlaying: boolean;
-  isMuted: boolean;
+  progress: number;
+  duration: number;
   repeatMode: RepeatMode;
   shuffle: boolean;
-  progress: Progress;
   volume: number;
+  isMuted: boolean;
 }

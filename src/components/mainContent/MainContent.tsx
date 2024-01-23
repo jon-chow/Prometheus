@@ -63,7 +63,7 @@ const MainDisplay = ({ tracks }: Props) => {
                 <li key={track.src}>
                   <Card
                     track={track}
-                    isCurrent={i === 0}
+                    isCurrentTrack={i === 0}
                   />
                 </li>
               );

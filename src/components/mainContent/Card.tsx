@@ -1,21 +1,29 @@
+import { BsPlayFill, BsPauseFill } from 'react-icons/bs';
 import '../../styles/Card.scss';
 
 interface Props {
   track: Track;
-  isCurrent?: boolean;
+  isCurrentTrack?: boolean;
 }
 
-const Card = ({ track, isCurrent }: Props) => {
+const Card = ({ track, isCurrentTrack }: Props) => {
   function convertDate(date: Date) {
     return date.toLocaleDateString('en-US');
   }
 
   return (
     <>
-      <div role="listitem" className={"card" + (isCurrent ? ' current' : '')}>
+      <div role="listitem" className={"card" + (isCurrentTrack ? ' current' : '')}>
         <div className="track-number">{track.order + 1}</div>
         <div className="main-info">
-          <img role="img" className="icon" src={track.thumbnail.src} />
+          <div className="art-cover">
+            <img src={track.thumbnail.src} />
+            <div className="art-cover-overlay">
+              <button className="play-button" onClick={() => console.log(`To implement playing ${track.title}`)}>
+                {/* {(isCurrentTrack && isPlaying) ? <BsPauseFill /> : } */} <BsPlayFill />
+              </button>
+            </div>
+          </div>
           <div className="desc">
             <p className="title">{track.title}</p>
             <p className="type">{track.type} • {track.author}</p>

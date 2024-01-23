@@ -10,14 +10,9 @@ import {
   BsArrowClockwise,
   BsArrowCounterclockwise
 } from 'react-icons/bs';
+import { RepeatMode } from '../../enums/RepeatMode';
 
 const SEEK_VALUE = 5;
-
-export enum RepeatMode {
-  Off = 0,
-  Repeat = 1,
-  RepeatOne = 2
-}
 
 interface Props {
   audioRef: React.RefObject<HTMLAudioElement>;
