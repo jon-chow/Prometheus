@@ -1,7 +1,7 @@
-import { useCallback, useState, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { BsPlayFill, BsPauseFill } from 'react-icons/bs';
 import { useStore } from '@nanostores/react';
-import { $audioState } from '../../stores/audioState.store';
+import { audioStore } from '../../stores/audioStore.store';
 import '../../styles/BottomBar.scss';
 
 import VolumeSlider from './VolumeSlider';
@@ -17,30 +17,26 @@ const BottomBar = ({ tracks }: Props) => {
   const progressRef = useRef<HTMLInputElement>(null);
   const playingRef = useRef<number>();
 
-  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
-  const [currentTrack, setCurrentTrack] = useState<Track | null>(tracks[0]);
-  const [progress, setProgress] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const $audioState = useStore(audioStore);
 
   const handlePlay = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setIsPlaying((playing) => !playing);
+    audioStore.setKey('isPlaying', !$audioState.isPlaying);
   };
 
   const handleNextTrack = () => {
-    const next = (currentTrackIndex + 1) % tracks.length;
-    setCurrentTrackIndex(next);
-    setCurrentTrack(tracks[next]);
+    const next = ($audioState.currentTrackIndex + 1) % tracks.length;
+    audioStore.setKey('currentTrackIndex', next);
+    audioStore.setKey('currentTrack', tracks[next]);
   };
 
   const handlePrevTrack = () => {
-    const prev = (currentTrackIndex - 1 + tracks.length) % tracks.length;
-    setCurrentTrackIndex(prev);
-    setCurrentTrack(tracks[prev]);
+    const prev = ($audioState.currentTrackIndex - 1 + tracks.length) % tracks.length;
+    audioStore.setKey('currentTrackIndex', prev);
+    audioStore.setKey('currentTrack', tracks[prev]);
   };
 
   const handleOnEnded = () => {
-    if (isPlaying) {
+    if ($audioState.isPlaying) {
       handleNextTrack();
     }
   }
@@ -49,42 +45,44 @@ const BottomBar = ({ tracks }: Props) => {
     if (audioRef.current && progressRef.current) {
       const currentTime = audioRef.current.currentTime * 1000;
       const normalizedTime = (currentTime / audioRef.current.duration) * 0.1;
-      setProgress(currentTime);
+      audioStore.setKey('progress', currentTime);
       progressRef.current.value = normalizedTime.toString();
       progressRef.current.style.setProperty('background', `linear-gradient(to right, #7a90ff ${normalizedTime}%, #aaa ${normalizedTime}%)`);
       playingRef.current = requestAnimationFrame(repeat);
     }
-  }, [audioRef, duration, progressRef, setProgress]);
+  }, [audioRef, $audioState.duration, progressRef]);
 
   useEffect(() => {
-    if (audioRef.current) isPlaying ? audioRef.current.play() : audioRef.current.pause();
+    if (audioRef.current) $audioState.isPlaying ? audioRef.current.play() : audioRef.current.pause();
     playingRef.current = requestAnimationFrame(repeat);
-  }, [audioRef, isPlaying, repeat]);
+  }, [audioRef, $audioState.isPlaying, repeat]);
 
   useEffect(() => {
-    if (audioRef.current && progressRef.current) setDuration(audioRef.current.duration * 1000);
-  }, [currentTrack, audioRef, progressRef]);
+    if (audioRef.current && progressRef.current)
+      audioStore.setKey('duration', audioRef.current.duration * 1000);
+  }, [$audioState.currentTrack, audioRef, progressRef]);
 
   const onLoadedMetadata = () => {
-    if (audioRef.current) setDuration(audioRef.current.duration * 1000);
+    if (audioRef.current)
+      audioStore.setKey('duration', audioRef.current.duration * 1000);
   };
 
   return (
     <>
-      <audio src={currentTrack?.src} ref={audioRef} preload="metadata" onLoadedMetadata={onLoadedMetadata} onEnded={(e) => handleOnEnded()} />
+      <audio src={$audioState.currentTrack?.src} ref={audioRef} preload="metadata" onLoadedMetadata={onLoadedMetadata} onEnded={(e) => handleOnEnded()} />
       <div className="bottombar">
         <div className="left">
           <div className="art-cover">
-            <img src={currentTrack?.thumbnail.src} />
+            <img src={$audioState.currentTrack?.thumbnail.src} />
             <div className="art-cover-overlay">
               <button className="play-button" onClick={handlePlay}>
-                {isPlaying ? <BsPauseFill /> : <BsPlayFill />}
+                {$audioState.isPlaying ? <BsPauseFill /> : <BsPlayFill />}
               </button>
             </div>
           </div>
           <div className="song-info">
-            <div className="song-name">{currentTrack?.title}</div>
-            <div className="artist-name">{currentTrack?.author}</div>
+            <div className="song-name">{$audioState.currentTrack?.title}</div>
+            <div className="artist-name">{$audioState.currentTrack?.author}</div>
           </div>
         </div>
 
@@ -94,12 +92,12 @@ const BottomBar = ({ tracks }: Props) => {
               audioRef={audioRef}
               handleNextTrack={handleNextTrack}
               handlePrevTrack={handlePrevTrack}
-              isPlaying={isPlaying}
-              setIsPlaying={setIsPlaying}
               handlePlay={handlePlay}
-              setProgress={setProgress}
             />
-            <ProgressBar audioRef={audioRef} progress={progress} progressRef={progressRef} duration={currentTrack?.duration} />
+            <ProgressBar
+              audioRef={audioRef}
+              progressRef={progressRef}
+            />
           </div>
         </div>
 

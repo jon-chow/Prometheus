@@ -1,7 +1,7 @@
 declare enum RepeatMode {
-  Off,
-  Track,
-  Playlist
+  Off = 0,
+  Repeat = 1,
+  RepeatOne = 2
 }
 
 interface IAudioState {
@@ -11,7 +11,7 @@ interface IAudioState {
   progress: number;
   duration: number;
   repeatMode: RepeatMode;
-  shuffle: boolean;
+  isShuffle: boolean;
   volume: number;
   isMuted: boolean;
 }

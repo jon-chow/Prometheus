@@ -1,45 +1,47 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { IoVolumeHigh, IoVolumeMedium, IoVolumeLow, IoVolumeOff, IoVolumeMute } from 'react-icons/io5';
+import { useStore } from '@nanostores/react';
+import { audioStore } from '../../stores/audioStore.store';
 
 interface Props {
   audioRef: React.RefObject<HTMLAudioElement>;
 }
 
 const VolumeSlider = ({ audioRef }: Props) => {
-  const [volume, setVolume] = useState(0.5);
-  const [isMuted, setIsMuted] = useState(false);
+  const $audioState = useStore(audioStore);
 
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.volume = volume;
-      audioRef.current.muted = isMuted;
+      audioRef.current.volume = $audioState.volume;
+      audioRef.current.muted = $audioState.isMuted;
     }
-  }, [volume, isMuted, audioRef]);
+  }, [$audioState.volume, $audioState.isMuted, audioRef]);
 
   const handleMute = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setIsMuted((muted) => !muted);
+    audioStore.setKey('isMuted', !$audioState.isMuted);
   };
 
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (isMuted) setIsMuted(false);
-    setVolume(parseInt(e.target.value) / 100);
+    if ($audioState.isMuted)
+      $audioState.isMuted = false;
+    audioStore.setKey('volume', parseInt(e.target.value) / 100);
   };
 
   function checkVolume() {
-    return isMuted ? 0 : volume * 100;
+    return $audioState.isMuted ? 0 : $audioState.volume * 100;
   }
 
   return (
     <>
-      <div className="volume" title={`${(volume * 100).toFixed(0).toString()}%`}>
+      <div className="volume" title={`${($audioState.volume * 100).toFixed(0).toString()}%`}>
         <button className="volume-icon" onClick={handleMute}>
-          {isMuted ? (
+          {$audioState.isMuted ? (
             <IoVolumeMute />
-          ) : volume === 0 ? (
+          ) : $audioState.volume === 0 ? (
             <IoVolumeOff />
-          ) : volume < 0.33 ? (
+          ) : $audioState.volume < 0.33 ? (
             <IoVolumeLow />
-          ) : volume < 0.67 ? (
+          ) : $audioState.volume < 0.67 ? (
             <IoVolumeMedium />
           ) : (
             <IoVolumeHigh />

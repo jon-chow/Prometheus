@@ -1,5 +1,5 @@
 export enum RepeatMode {
-  Off,
-  Repeat,
-  RepeatOne
+  Off = 0,
+  Repeat = 1,
+  RepeatOne = 2
 }

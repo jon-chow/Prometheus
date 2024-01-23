@@ -1,11 +1,14 @@
+import { useStore } from '@nanostores/react';
+import { audioStore } from '../../stores/audioStore.store';
+
 interface Props {
   audioRef: React.RefObject<HTMLAudioElement>;
-  progress: number;
   progressRef: React.RefObject<HTMLInputElement>;
-  duration: string | undefined;
 }
 
-const ProgressBar = ({ audioRef, progress, progressRef, duration }: Props) => {
+const ProgressBar = ({ audioRef, progressRef }: Props) => {
+  const $audioState = useStore(audioStore);
+
   const handleProgressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (audioRef.current)
       audioRef.current.currentTime = (parseInt(e.target.value) / 100) * audioRef.current.duration;
@@ -20,9 +23,9 @@ const ProgressBar = ({ audioRef, progress, progressRef, duration }: Props) => {
   return (
     <>
       <div className="progress">
-        <div className="time-elapsed">{formatTime(progress)}</div>
+        <div className="time-elapsed">{formatTime($audioState.progress)}</div>
         <input className="progress-bar" ref={progressRef} type="range" defaultValue="0" onInput={handleProgressChange} />
-        <div className="total-time">{duration || '0:00'}</div>
+        <div className="total-time">{formatTime($audioState.duration)}</div>
       </div>
     </>
   );
