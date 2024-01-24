@@ -43,25 +43,53 @@ const Controls = ({ audioRef, handlePrevTrack, handleNextTrack, handlePlay }: Pr
   return (
     <>
       <div className="controls">
-        <button className={'shuffle-button' + ($audioState.isShuffle ? ' enabled' : '')} onClick={handleShuffle}>
+        <button
+          className={'shuffle-button' + ($audioState.isShuffle ? ' enabled' : '')}
+          onClick={handleShuffle}
+          title="Shuffle"
+        >
           <BsShuffle />
         </button>
-        <button className="seek-backward-button" onClick={(e) => handleSeek(e, -1 * SEEK_VALUE)}>
+        <button
+          className="seek-backward-button"
+          onClick={(e) => handleSeek(e, -1 * SEEK_VALUE)}
+          title="Seek (-5s)"
+        >
           <BsArrowCounterclockwise />
         </button>
-        <button className="skip-button" onClick={(e) => handlePrevTrack()}>
+        <button
+          className="skip-button"
+          onClick={(e) => handlePrevTrack()}
+          title="Previous Track"
+        >
           <BsSkipBackwardFill />
         </button>
-        <button className="play-button" onClick={handlePlay}>
+        <button
+          className="play-button"
+          onClick={handlePlay}
+          title={$audioState.isPlaying ? 'Pause' : 'Play'}
+        >
           {$audioState.isPlaying ? <BsPauseFill /> : <BsPlayFill />}
         </button>
-        <button className="skip-button" onClick={(e) => handleNextTrack()}>
+        <button
+          className="skip-button"
+          onClick={(e) => handleNextTrack()}
+          title="Next Track"
+        >
           <BsSkipForwardFill />
         </button>
-        <button className="seek-forward-button" onClick={(e) => handleSeek(e, SEEK_VALUE)}>
+        <button
+          className="seek-forward-button"
+          onClick={(e) => handleSeek(e, SEEK_VALUE)}
+          title="Seek (+5s)"
+        >
           <BsArrowClockwise />
         </button>
-        <button className={'repeat-button' + ($audioState.repeatMode === RepeatMode.Off ? '' : ' enabled')} onClick={handleRepeatMode}>
+        <button
+          className={'repeat-button' + ($audioState.repeatMode === RepeatMode.Off ? '' : ' enabled')}
+          onClick={handleRepeatMode}
+          title="Repeat"
+        >
           {$audioState.repeatMode === RepeatMode.RepeatOne ? <BsRepeat1 /> : <BsRepeat />}
         </button>
       </div>

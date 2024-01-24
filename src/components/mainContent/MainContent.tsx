@@ -15,6 +15,7 @@ const MainDisplay = ({ tracks }: Props) => {
 
   const $audioState = useStore(audioStore);
 
+  // TODO: Optimize behaviour (lags when switching to multiple tracks)
   useEffect(() => {
     if (!resizerRef.current) return;
     let x = 0;
@@ -77,7 +78,7 @@ const MainDisplay = ({ tracks }: Props) => {
         <div className="resizer" ref={resizerRef} />
         <div className="content">
           <div className="background">
-            <img src={tracks[$audioState.currentTrackIndex].thumbnail.src} />
+            <img src={tracks[($audioState.currentTrackIndex ?? 0)].thumbnail.src} />
             <div className="overlay" />
           </div>
           <div className="main-content">

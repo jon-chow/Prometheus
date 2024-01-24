@@ -24,13 +24,13 @@ const BottomBar = ({ tracks }: Props) => {
   };
 
   const handleNextTrack = () => {
-    const next = ($audioState.currentTrackIndex + 1) % tracks.length;
+    const next = (($audioState.currentTrackIndex ?? -1) + 1) % tracks.length;
     audioStore.setKey('currentTrackIndex', next);
     audioStore.setKey('currentTrack', tracks[next]);
   };
 
   const handlePrevTrack = () => {
-    const prev = ($audioState.currentTrackIndex - 1 + tracks.length) % tracks.length;
+    const prev = (($audioState.currentTrackIndex ?? 1) - 1 + tracks.length) % tracks.length;
     audioStore.setKey('currentTrackIndex', prev);
     audioStore.setKey('currentTrack', tracks[prev]);
   };
@@ -53,23 +53,33 @@ const BottomBar = ({ tracks }: Props) => {
   }, [audioRef, $audioState.duration, progressRef]);
 
   useEffect(() => {
-    if (audioRef.current) $audioState.isPlaying ? audioRef.current.play() : audioRef.current.pause();
+    if (audioRef.current) {
+      ($audioState.isPlaying) ? audioRef.current.play() : audioRef.current.pause();
+      audioStore.setKey('duration', audioRef.current.duration * 1000);
+    }
     playingRef.current = requestAnimationFrame(repeat);
   }, [audioRef, $audioState.isPlaying, repeat]);
 
-  useEffect(() => {
-    if (audioRef.current && progressRef.current)
-      audioStore.setKey('duration', audioRef.current.duration * 1000);
-  }, [$audioState.currentTrack, audioRef, progressRef]);
-
   const onLoadedMetadata = () => {
-    if (audioRef.current)
+    if (audioRef.current) {
       audioStore.setKey('duration', audioRef.current.duration * 1000);
+      audioRef.current.volume = $audioState.volume;
+    }
   };
 
   return (
     <>
-      <audio src={$audioState.currentTrack?.src} ref={audioRef} preload="metadata" onLoadedMetadata={onLoadedMetadata} onEnded={(e) => handleOnEnded()} />
+      {
+        ($audioState.currentTrack?.src !== '') && (
+          <audio
+            src={$audioState.currentTrack?.src}
+            ref={audioRef}
+            preload="metadata"
+            onLoadedMetadata={onLoadedMetadata}
+            onEnded={(e) => handleOnEnded()}
+          />
+        )
+      }
       <div className="bottombar">
         <div className="left">
           <div className="art-cover">

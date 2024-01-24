@@ -1,6 +1,6 @@
-import BottomBar from "../components/bottomBar/BottomBar";
-import MainContent from "../components/mainContent/MainContent";
-import TopBar from "../components/topBar/TopBar";
+import BottomBar from "./bottomBar/BottomBar";
+import MainContent from "./mainContent/MainContent";
+import TopBar from "./topBar/TopBar";
 
 import { tracks } from '../data/tracks';
 
