@@ -1,4 +1,6 @@
 import { BsPlayFill, BsPauseFill } from 'react-icons/bs';
+import { useStore } from '@nanostores/react';
+import { audioStore } from '../../stores/audioStore.store';
 import '../../styles/Card.scss';
 
 interface Props {
@@ -7,9 +9,21 @@ interface Props {
 }
 
 const Card = ({ track, isCurrentTrack }: Props) => {
+  const $audioState = useStore(audioStore);
+
   function convertDate(date: Date) {
     return date.toLocaleDateString('en-US');
   }
+
+  const changeToThisTrack = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (isCurrentTrack) {
+      audioStore.setKey('isPlaying', !$audioState.isPlaying);
+    } else {
+      audioStore.setKey('currentTrack', track);
+      audioStore.setKey('currentTrackIndex', track.order);
+      audioStore.setKey('isPlaying', true);
+    }
+  };
 
   return (
     <>
@@ -19,8 +33,8 @@ const Card = ({ track, isCurrentTrack }: Props) => {
           <div className="art-cover">
             <img src={track.thumbnail.src} />
             <div className="art-cover-overlay">
-              <button className="play-button" onClick={() => console.log(`To implement playing ${track.title}`)}>
-                {/* {(isCurrentTrack && isPlaying) ? <BsPauseFill /> : } */} <BsPlayFill />
+              <button className="play-button" onClick={changeToThisTrack}>
+                {(isCurrentTrack && $audioState.isPlaying) ? <BsPauseFill /> : <BsPlayFill /> }
               </button>
             </div>
           </div>

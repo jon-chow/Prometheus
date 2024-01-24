@@ -1,4 +1,6 @@
 import { useEffect, useRef } from 'react';
+import { useStore } from '@nanostores/react';
+import { audioStore } from '../../stores/audioStore.store';
 import '../../styles/MainContent.scss';
 
 import Card from './Card';
@@ -10,6 +12,8 @@ interface Props {
 const MainDisplay = ({ tracks }: Props) => {
   const sidebarRef = useRef<HTMLDivElement>(null);
   const resizerRef = useRef<HTMLDivElement>(null);
+
+  const $audioState = useStore(audioStore);
 
   useEffect(() => {
     if (!resizerRef.current) return;
@@ -63,7 +67,7 @@ const MainDisplay = ({ tracks }: Props) => {
                 <li key={track.src}>
                   <Card
                     track={track}
-                    isCurrentTrack={i === 0}
+                    isCurrentTrack={$audioState.currentTrackIndex === i}
                   />
                 </li>
               );
@@ -73,11 +77,11 @@ const MainDisplay = ({ tracks }: Props) => {
         <div className="resizer" ref={resizerRef} />
         <div className="content">
           <div className="background">
-            <img src={tracks[0].thumbnail.src} />
+            <img src={tracks[$audioState.currentTrackIndex].thumbnail.src} />
             <div className="overlay" />
           </div>
           <div className="main-content">
-
+            
           </div>
         </div>
       </div>
