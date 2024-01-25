@@ -1,6 +1,12 @@
+declare enum TrackType {
+  Single = 'Single',
+  Album = 'Album',
+  Playlist = 'Playlist'
+}
+
 interface Track {
   order: number;
-  type: string;
+  type: TrackType;
   title: string;
   src: string;
   author: string;

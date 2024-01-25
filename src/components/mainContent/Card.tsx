@@ -31,7 +31,7 @@ const Card = ({ track, isCurrentTrack }: Props) => {
         <div className="track-number">{track.order + 1}</div>
         <div className="main-info">
           <div className="art-cover">
-            <img src={track.thumbnail.src} />
+            <img src={track.thumbnail.src} loading="lazy" decoding="async" />
             <div className="art-cover-overlay">
               <button className="play-button" onClick={changeToThisTrack}>
                 {(isCurrentTrack && $audioState.isPlaying) ? <BsPauseFill /> : <BsPlayFill /> }

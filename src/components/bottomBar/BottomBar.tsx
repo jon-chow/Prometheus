@@ -50,14 +50,13 @@ const BottomBar = ({ tracks }: Props) => {
       progressRef.current.style.setProperty('background', `linear-gradient(to right, #7a90ff ${normalizedTime}%, #aaa ${normalizedTime}%)`);
       playingRef.current = requestAnimationFrame(repeat);
     }
-  }, [audioRef, $audioState.duration, progressRef]);
+  }, [audioRef, $audioState.duration]);
 
   useEffect(() => {
-    if (audioRef.current) {
+    if (audioRef.current)
       ($audioState.isPlaying) ? audioRef.current.play() : audioRef.current.pause();
-      audioStore.setKey('duration', audioRef.current.duration * 1000);
-    }
     playingRef.current = requestAnimationFrame(repeat);
+    return () => cancelAnimationFrame(playingRef.current as number);
   }, [audioRef, $audioState.isPlaying, repeat]);
 
   const onLoadedMetadata = () => {

@@ -4,6 +4,7 @@ import { audioStore } from '../../stores/audioStore.store';
 import '../../styles/MainContent.scss';
 
 import Card from './Card';
+import { EMPTY_TRACK } from '../../data/tracks';
 
 interface Props {
   tracks: Track[];
@@ -15,7 +16,6 @@ const MainDisplay = ({ tracks }: Props) => {
 
   const $audioState = useStore(audioStore);
 
-  // TODO: Optimize behaviour (lags when switching to multiple tracks)
   useEffect(() => {
     if (!resizerRef.current) return;
     let x = 0;
@@ -49,6 +49,11 @@ const MainDisplay = ({ tracks }: Props) => {
     }
 
     resizerRef.current.addEventListener('mousedown', mouseDownHandler);
+
+    return () => {
+      if (resizerRef.current)
+        resizerRef.current.removeEventListener('mousedown', mouseDownHandler);
+    }
   });
 
   return (
@@ -78,11 +83,34 @@ const MainDisplay = ({ tracks }: Props) => {
         <div className="resizer" ref={resizerRef} />
         <div className="content">
           <div className="background">
-            <img src={tracks[($audioState.currentTrackIndex ?? 0)].thumbnail.src} />
+            <img
+              src={ $audioState.currentTrackIndex !== null ?
+                tracks[$audioState.currentTrackIndex].thumbnail.src :
+                EMPTY_TRACK.thumbnail.src
+              }
+              loading="lazy"
+              decoding="async"
+            />
             <div className="overlay" />
           </div>
+          <div className="banner-content">
+            <div className="banner">
+              <p>{
+                $audioState.currentTrackIndex !== null ?
+                tracks[$audioState.currentTrackIndex].title :
+                EMPTY_TRACK.title
+              }</p>
+              <h1>
+                {
+                  $audioState.currentTrackIndex !== null ?
+                  tracks[$audioState.currentTrackIndex].author :
+                  EMPTY_TRACK.author
+                }
+              </h1>
+            </div>
+          </div>
           <div className="main-content">
-            
+            Something something
           </div>
         </div>
       </div>
