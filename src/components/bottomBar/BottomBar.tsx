@@ -7,6 +7,7 @@ import '../../styles/BottomBar.scss';
 import VolumeSlider from './VolumeSlider';
 import Controls from './Controls';
 import ProgressBar from './ProgressBar';
+import { RepeatMode } from '../../enums/RepeatMode';
 
 interface Props {
   tracks: Track[];
@@ -20,25 +21,39 @@ const BottomBar = ({ tracks }: Props) => {
   const $audioState = useStore(audioStore);
 
   const handlePlay = (e: React.MouseEvent<HTMLButtonElement>) => {
-    audioStore.setKey('isPlaying', !$audioState.isPlaying);
+    if ($audioState.currentTrackIndex !== null)
+      audioStore.setKey('isPlaying', !$audioState.isPlaying);
   };
 
   const handleNextTrack = () => {
+    if ($audioState.repeatMode === RepeatMode.RepeatOne) {
+      (audioRef.current as HTMLAudioElement).currentTime = 0;
+      return;
+    }
     const next = (($audioState.currentTrackIndex ?? -1) + 1) % tracks.length;
     audioStore.setKey('currentTrackIndex', next);
     audioStore.setKey('currentTrack', tracks[next]);
   };
 
   const handlePrevTrack = () => {
+    if ($audioState.repeatMode === RepeatMode.RepeatOne) {
+      (audioRef.current as HTMLAudioElement).currentTime = 0;
+      return;
+    }
     const prev = (($audioState.currentTrackIndex ?? 1) - 1 + tracks.length) % tracks.length;
     audioStore.setKey('currentTrackIndex', prev);
     audioStore.setKey('currentTrack', tracks[prev]);
   };
 
   const handleOnEnded = () => {
-    if ($audioState.isPlaying) {
-      handleNextTrack();
-    }
+    if ($audioState.isPlaying)
+      if ($audioState.repeatMode === RepeatMode.Off) {
+        ($audioState.currentTrackIndex !== tracks.length - 1) ?
+          handleNextTrack() :
+          audioStore.setKey('isPlaying', false);
+      } else if ($audioState.repeatMode === RepeatMode.Repeat) {
+        handleNextTrack();
+      }
   }
 
   const repeat = useCallback(() => {
@@ -76,6 +91,7 @@ const BottomBar = ({ tracks }: Props) => {
             preload="metadata"
             onLoadedMetadata={onLoadedMetadata}
             onEnded={(e) => handleOnEnded()}
+            loop={$audioState.repeatMode === RepeatMode.RepeatOne}
           />
         )
       }

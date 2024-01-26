@@ -82,35 +82,43 @@ const MainDisplay = ({ tracks }: Props) => {
         </div>
         <div className="resizer" ref={resizerRef} />
         <div className="content">
-          <div className="background">
-            <img
-              src={ $audioState.currentTrackIndex !== null ?
-                tracks[$audioState.currentTrackIndex].thumbnail.src :
-                EMPTY_TRACK.thumbnail.src
-              }
-              loading="lazy"
-              decoding="async"
-            />
-            <div className="overlay" />
-          </div>
-          <div className="banner-content">
-            <div className="banner">
-              <p>{
-                $audioState.currentTrackIndex !== null ?
-                tracks[$audioState.currentTrackIndex].title :
-                EMPTY_TRACK.title
-              }</p>
-              <h1>
-                {
-                  $audioState.currentTrackIndex !== null ?
-                  tracks[$audioState.currentTrackIndex].author :
-                  EMPTY_TRACK.author
+          <div className="container">
+            <div className="background">
+              <img
+                src={ $audioState.currentTrackIndex !== null ?
+                  tracks[$audioState.currentTrackIndex].thumbnail.src :
+                  EMPTY_TRACK.thumbnail.src
                 }
-              </h1>
+                loading="lazy"
+                decoding="async"
+              />
+              <div className="overlay" />
             </div>
-          </div>
-          <div className="main-content">
-            Something something
+            <div className="banner-content">
+              <div className="banner">
+                <h1>
+                  {
+                    $audioState.currentTrackIndex !== null ?
+                    tracks[$audioState.currentTrackIndex].title :
+                    EMPTY_TRACK.title
+                  }
+                </h1>
+                <p>
+                  {
+                    $audioState.currentTrackIndex !== null ?
+                    tracks[$audioState.currentTrackIndex].type :
+                    EMPTY_TRACK.type
+                  }&nbsp;•&nbsp;{
+                    $audioState.currentTrackIndex !== null ?
+                    tracks[$audioState.currentTrackIndex].author :
+                    EMPTY_TRACK.author
+                  }
+                </p>
+              </div>
+            </div>
+            <div className="main-content">
+              
+            </div>
           </div>
         </div>
       </div>
