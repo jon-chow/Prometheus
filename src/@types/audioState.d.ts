@@ -14,4 +14,5 @@ interface IAudioState {
   isShuffle: boolean;
   volume: number;
   isMuted: boolean;
+  isSeeking: boolean;
 }

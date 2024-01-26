@@ -13,5 +13,6 @@ export const audioStore = map<IAudioState>({
   repeatMode: RepeatMode.Off,
   isShuffle: false,
   volume: 0.5,
-  isMuted: false
+  isMuted: false,
+  isSeeking: false
 });

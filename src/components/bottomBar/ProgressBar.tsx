@@ -6,13 +6,22 @@ interface Props {
   progressRef: React.RefObject<HTMLInputElement>;
 }
 
+// TODO: fix seeking
 const ProgressBar = ({ audioRef, progressRef }: Props) => {
   const $audioState = useStore(audioStore);
 
   const handleProgressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (audioRef.current)
-      audioRef.current.currentTime = (parseInt(e.target.value) / 100) * audioRef.current.duration;
+      audioRef.current.currentTime = (parseInt(e.target.value) / 100) * audioRef.current.duration || 0;
   };
+
+  const handleMouseDown = (e: React.MouseEvent<HTMLInputElement>) => {
+    audioStore.setKey("isSeeking", true);
+  }
+
+  const handleMouseUp = (e: React.MouseEvent<HTMLInputElement>) => {
+    audioStore.setKey("isSeeking", false);
+  }
 
   function formatTime(milliseconds = 0) {
     if (isNaN(milliseconds)) return '0:00';
@@ -24,7 +33,15 @@ const ProgressBar = ({ audioRef, progressRef }: Props) => {
     <>
       <div className="progress">
         <div className="time-elapsed">{formatTime($audioState.progress)}</div>
-        <input className="progress-bar" ref={progressRef} type="range" defaultValue="0" onInput={handleProgressChange} />
+        <input
+          className="progress-bar"
+          ref={progressRef}
+          type="range"
+          defaultValue="0"
+          onInput={handleProgressChange}
+          onMouseDown={handleMouseDown}
+          onMouseUp={handleMouseUp}
+        />
         <div className="total-time">{formatTime($audioState.duration)}</div>
       </div>
     </>
