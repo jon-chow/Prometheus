@@ -21,8 +21,7 @@ const BottomBar = ({ tracks }: Props) => {
   const $audioState = useStore(audioStore);
 
   const handlePlay = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if ($audioState.currentTrackIndex !== null)
-      audioStore.setKey('isPlaying', !$audioState.isPlaying);
+    if ($audioState.currentTrackIndex !== null) audioStore.setKey('isPlaying', !$audioState.isPlaying);
   };
 
   const handleNextTrack = () => {
@@ -48,13 +47,11 @@ const BottomBar = ({ tracks }: Props) => {
   const handleOnEnded = () => {
     if ($audioState.isPlaying)
       if ($audioState.repeatMode === RepeatMode.Off) {
-        ($audioState.currentTrackIndex !== tracks.length - 1) ?
-          handleNextTrack() :
-          audioStore.setKey('isPlaying', false);
+        $audioState.currentTrackIndex !== tracks.length - 1 ? handleNextTrack() : audioStore.setKey('isPlaying', false);
       } else if ($audioState.repeatMode === RepeatMode.Repeat) {
         handleNextTrack();
       }
-  }
+  };
 
   const repeat = useCallback(() => {
     if (audioRef.current && progressRef.current) {
@@ -68,8 +65,7 @@ const BottomBar = ({ tracks }: Props) => {
   }, [audioRef, $audioState.duration]);
 
   useEffect(() => {
-    if (audioRef.current)
-      ($audioState.isPlaying) ? audioRef.current.play() : audioRef.current.pause();
+    if (audioRef.current) $audioState.isPlaying ? audioRef.current.play() : audioRef.current.pause();
     playingRef.current = requestAnimationFrame(repeat);
     return () => cancelAnimationFrame(playingRef.current as number);
   }, [audioRef, $audioState.isPlaying, repeat]);
@@ -83,18 +79,16 @@ const BottomBar = ({ tracks }: Props) => {
 
   return (
     <>
-      {
-        ($audioState.currentTrack?.src !== '') && (
-          <audio
-            src={$audioState.currentTrack?.src}
-            ref={audioRef}
-            preload="metadata"
-            onLoadedMetadata={onLoadedMetadata}
-            onEnded={(e) => handleOnEnded()}
-            loop={$audioState.repeatMode === RepeatMode.RepeatOne}
-          />
-        )
-      }
+      {$audioState.currentTrack?.src !== '' && (
+        <audio
+          src={$audioState.currentTrack?.src}
+          ref={audioRef}
+          preload="metadata"
+          onLoadedMetadata={onLoadedMetadata}
+          onEnded={(e) => handleOnEnded()}
+          loop={$audioState.repeatMode === RepeatMode.RepeatOne}
+        />
+      )}
       <div className="bottombar">
         <div className="left">
           <div className="art-cover">
@@ -113,16 +107,8 @@ const BottomBar = ({ tracks }: Props) => {
 
         <div className="center">
           <div className="player">
-            <Controls
-              audioRef={audioRef}
-              handleNextTrack={handleNextTrack}
-              handlePrevTrack={handlePrevTrack}
-              handlePlay={handlePlay}
-            />
-            <ProgressBar
-              audioRef={audioRef}
-              progressRef={progressRef}
-            />
+            <Controls audioRef={audioRef} handleNextTrack={handleNextTrack} handlePrevTrack={handlePrevTrack} handlePlay={handlePlay} />
+            <ProgressBar audioRef={audioRef} progressRef={progressRef} />
           </div>
         </div>
 

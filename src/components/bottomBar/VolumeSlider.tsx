@@ -22,8 +22,7 @@ const VolumeSlider = ({ audioRef }: Props) => {
   };
 
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if ($audioState.isMuted)
-      $audioState.isMuted = false;
+    if ($audioState.isMuted) $audioState.isMuted = false;
     audioStore.setKey('volume', parseInt(e.target.value) / 100);
   };
 

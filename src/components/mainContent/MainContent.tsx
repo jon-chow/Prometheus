@@ -5,6 +5,7 @@ import '../../styles/MainContent.scss';
 
 import Card from './Card';
 import { EMPTY_TRACK } from '../../data/tracks';
+import Visualizer from './Visualizer';
 
 interface Props {
   tracks: Track[];
@@ -51,9 +52,8 @@ const MainDisplay = ({ tracks }: Props) => {
     resizerRef.current.addEventListener('mousedown', mouseDownHandler);
 
     return () => {
-      if (resizerRef.current)
-        resizerRef.current.removeEventListener('mousedown', mouseDownHandler);
-    }
+      if (resizerRef.current) resizerRef.current.removeEventListener('mousedown', mouseDownHandler);
+    };
   });
 
   return (
@@ -71,10 +71,7 @@ const MainDisplay = ({ tracks }: Props) => {
             {tracks.map((track, i) => {
               return (
                 <li key={track.src}>
-                  <Card
-                    track={track}
-                    isCurrentTrack={$audioState.currentTrackIndex === i}
-                  />
+                  <Card track={track} isCurrentTrack={$audioState.currentTrackIndex === i} />
                 </li>
               );
             })}
@@ -85,10 +82,7 @@ const MainDisplay = ({ tracks }: Props) => {
           <div className="container">
             <div className="background">
               <img
-                src={ $audioState.currentTrackIndex !== null ?
-                  tracks[$audioState.currentTrackIndex].thumbnail.src :
-                  EMPTY_TRACK.thumbnail.src
-                }
+                src={$audioState.currentTrackIndex !== null ? tracks[$audioState.currentTrackIndex].thumbnail.src : EMPTY_TRACK.thumbnail.src}
                 loading="lazy"
                 decoding="async"
               />
@@ -96,29 +90,16 @@ const MainDisplay = ({ tracks }: Props) => {
             </div>
             <div className="banner-content">
               <div className="banner">
-                <h1>
-                  {
-                    $audioState.currentTrackIndex !== null ?
-                    tracks[$audioState.currentTrackIndex].title :
-                    EMPTY_TRACK.title
-                  }
-                </h1>
+                <h1>{$audioState.currentTrackIndex !== null ? tracks[$audioState.currentTrackIndex].title : EMPTY_TRACK.title}</h1>
                 <p>
-                  {
-                    $audioState.currentTrackIndex !== null ?
-                    tracks[$audioState.currentTrackIndex].type :
-                    EMPTY_TRACK.type
-                  }&nbsp;•&nbsp;{
-                    $audioState.currentTrackIndex !== null ?
-                    tracks[$audioState.currentTrackIndex].author :
-                    EMPTY_TRACK.author
-                  }
+                  {$audioState.currentTrackIndex !== null ? tracks[$audioState.currentTrackIndex].type : EMPTY_TRACK.type}&nbsp;•&nbsp;
+                  {$audioState.currentTrackIndex !== null ? tracks[$audioState.currentTrackIndex].author : EMPTY_TRACK.author}
                 </p>
               </div>
             </div>
-            <div className="main-content">
-              
-            </div>
+          </div>
+          <div className="visualizer">
+            <Visualizer />
           </div>
         </div>
       </div>

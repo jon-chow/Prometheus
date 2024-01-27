@@ -27,20 +27,22 @@ const Card = ({ track, isCurrentTrack }: Props) => {
 
   return (
     <>
-      <div role="listitem" className={"card" + (isCurrentTrack ? ' current' : '')}>
+      <div role="listitem" className={'card' + (isCurrentTrack ? ' current' : '')}>
         <div className="track-number">{track.order + 1}</div>
         <div className="main-info">
           <div className="art-cover">
             <img src={track.thumbnail.src} loading="lazy" decoding="async" />
             <div className="art-cover-overlay">
               <button className="play-button" onClick={changeToThisTrack}>
-                {(isCurrentTrack && $audioState.isPlaying) ? <BsPauseFill /> : <BsPlayFill /> }
+                {isCurrentTrack && $audioState.isPlaying ? <BsPauseFill /> : <BsPlayFill />}
               </button>
             </div>
           </div>
           <div className="desc">
             <p className="title">{track.title}</p>
-            <p className="type">{track.type} • {track.author}</p>
+            <p className="type">
+              {track.type} • {track.author}
+            </p>
           </div>
         </div>
         <p className="date">{convertDate(track.dateAdded)}</p>

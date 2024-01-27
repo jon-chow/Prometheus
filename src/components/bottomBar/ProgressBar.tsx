@@ -11,17 +11,16 @@ const ProgressBar = ({ audioRef, progressRef }: Props) => {
   const $audioState = useStore(audioStore);
 
   const handleProgressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (audioRef.current)
-      audioRef.current.currentTime = (parseInt(e.target.value) / 100) * audioRef.current.duration || 0;
+    if (audioRef.current) audioRef.current.currentTime = (parseInt(e.target.value) / 100) * audioRef.current.duration || 0;
   };
 
   const handleMouseDown = (e: React.MouseEvent<HTMLInputElement>) => {
-    audioStore.setKey("isSeeking", true);
-  }
+    audioStore.setKey('isSeeking', true);
+  };
 
   const handleMouseUp = (e: React.MouseEvent<HTMLInputElement>) => {
-    audioStore.setKey("isSeeking", false);
-  }
+    audioStore.setKey('isSeeking', false);
+  };
 
   function formatTime(milliseconds = 0) {
     if (isNaN(milliseconds)) return '0:00';
