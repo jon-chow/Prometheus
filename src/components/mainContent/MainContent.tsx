@@ -79,27 +79,25 @@ const MainDisplay = ({ tracks }: Props) => {
         </div>
         <div className="resizer" ref={resizerRef} />
         <div className="content">
+          <div className="visualizer">
+            <Visualizer />
+          </div>
           <div className="container">
-            <div className="background">
+            <div className="banner">
               <img
+                className={"art-cover" + ($audioState.isPlaying ? ' playing' : '')}
                 src={$audioState.currentTrackIndex !== null ? tracks[$audioState.currentTrackIndex].thumbnail.src : EMPTY_TRACK.thumbnail.src}
                 loading="lazy"
                 decoding="async"
               />
-              <div className="overlay" />
-            </div>
-            <div className="banner-content">
-              <div className="banner">
-                <h1>{$audioState.currentTrackIndex !== null ? tracks[$audioState.currentTrackIndex].title : EMPTY_TRACK.title}</h1>
-                <p>
+              <div className="text">
+                <h2>{$audioState.currentTrackIndex !== null ? tracks[$audioState.currentTrackIndex].title : EMPTY_TRACK.title}</h2>
+                <h4>
                   {$audioState.currentTrackIndex !== null ? tracks[$audioState.currentTrackIndex].type : EMPTY_TRACK.type}&nbsp;•&nbsp;
                   {$audioState.currentTrackIndex !== null ? tracks[$audioState.currentTrackIndex].author : EMPTY_TRACK.author}
-                </p>
+                </h4>
               </div>
             </div>
-          </div>
-          <div className="visualizer">
-            <Visualizer />
           </div>
         </div>
       </div>

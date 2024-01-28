@@ -1,12 +1,12 @@
 import { Suspense, useRef } from 'react';
+import { Html } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
+import { Physics } from '@react-three/rapier';
 import { useStore } from '@nanostores/react';
 import { audioStore } from '../../stores/audioStore.store';
 // import '../../styles/Visualizer.scss';
 
 import Experience from './Experience';
-import { Physics } from '@react-three/rapier';
-import { Html } from '@react-three/drei';
 
 interface Props {}
 

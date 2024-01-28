@@ -1,6 +1,6 @@
 .card {
   display: grid;
-  grid-template-columns: 12px 200px 150px auto;
+  grid-template-columns: 12px 220px 150px auto;
   align-items: center;
   text-align: start;
   max-height: 50px;
@@ -26,7 +26,6 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-    min-width: 200px;
 
     .art-cover {
       position: relative;
@@ -73,6 +72,7 @@
     }
     .desc {
       display: flex;
+      max-width: calc(220px - 70px);
       flex-direction: column;
       justify-content: center;
 
@@ -82,10 +82,21 @@
         font-weight: 500;
         color: #ffffff;
       }
-      .type {
+      .sub-info {
+        display: flex;
+        gap: 0.25rem;
         font-size: 0.9rem;
         font-weight: 400;
         color: #cccccc;
+
+        .author {
+          overflow: hidden;
+
+          & > p {
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
       }
     }
   }

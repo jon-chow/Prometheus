@@ -40,9 +40,12 @@ const Card = ({ track, isCurrentTrack }: Props) => {
           </div>
           <div className="desc">
             <p className="title">{track.title}</p>
-            <p className="type">
-              {track.type} • {track.author}
-            </p>
+            <div className="sub-info">
+              <p className="type">{track.type}</p>•
+              <div className="author" title={track.author}>
+                <p>{track.author}</p>
+              </div>
+            </div>
           </div>
         </div>
         <p className="date">{convertDate(track.dateAdded)}</p>
