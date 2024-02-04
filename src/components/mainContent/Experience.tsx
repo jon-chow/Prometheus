@@ -1,9 +1,10 @@
-import { Cylinder, OrbitControls, Sky, Text } from '@react-three/drei';
+import { Cylinder, OrbitControls, Sky } from '@react-three/drei';
 import { RigidBody, CylinderCollider } from '@react-three/rapier';
 
 const Experience = () => {
   return (
     <>
+      {/* CAMERA */}
       <OrbitControls
         enablePan={false}
         enableRotate={true}

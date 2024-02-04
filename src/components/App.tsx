@@ -1,42 +1,15 @@
-import { useEffect } from 'react';
-import { useStore } from '@nanostores/react';
-import { audioStore } from '../stores/audioStore.store';
-
 import BottomBar from './bottomBar/BottomBar';
 import MainContent from './mainContent/MainContent';
 import TopBar from './topBar/TopBar';
-
-import { tracks } from '../data/tracks';
+import AudioContextProvider from '../contexts/AudioContext';
 
 interface Props {
   title: string;
 }
 
 const App = ({ title }: Props) => {
-  const $audioState = useStore(audioStore);
-
-  // Shuffle
-  useEffect(() => {
-    if (audioStore.get().isShuffle) {
-      const shuffled = [...tracks];
-      for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-      }
-      shuffled.forEach((track) => (track.order = shuffled.indexOf(track)));
-      const newId = shuffled.find((track) => track.id === $audioState.currentTrack?.id)?.order;
-      if (newId !== undefined) audioStore.setKey('currentTrackIndex', newId);
-      audioStore.setKey('trackList', shuffled);
-    } else {
-      tracks.forEach((track) => (track.order = tracks.indexOf(track)));
-      const newId = tracks.find((track) => track.id === $audioState.currentTrack?.id)?.order;
-      if (newId !== undefined) audioStore.setKey('currentTrackIndex', newId);
-      audioStore.setKey('trackList', tracks);
-    }
-  }, [$audioState.isShuffle]);
-
   return (
-    <>
+    <AudioContextProvider>
       <div
         role="grid"
         style={{
@@ -55,7 +28,7 @@ const App = ({ title }: Props) => {
         <MainContent />
         <BottomBar />
       </div>
-    </>
+    </AudioContextProvider>
   );
 };
 

@@ -1,57 +1,22 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { BsPlayFill, BsPauseFill } from 'react-icons/bs';
 import { useStore } from '@nanostores/react';
+import { useAudioContext } from '../../contexts/AudioContext';
 import { audioStore } from '../../stores/audioStore.store';
 import '../../styles/BottomBar.scss';
 
 import VolumeSlider from './VolumeSlider';
 import Controls from './Controls';
 import ProgressBar from './ProgressBar';
-import { RepeatMode } from '../../enums/RepeatMode';
 
 interface Props {}
 
 const BottomBar = ({}: Props) => {
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const { audioRef, handleNextTrack, handlePrevTrack, handlePlay } = useAudioContext();
   const progressRef = useRef<HTMLInputElement>(null);
   const playingRef = useRef<number>();
 
   const $audioState = useStore(audioStore);
-
-  const handlePlay = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if ($audioState.currentTrackIndex !== null) audioStore.setKey('isPlaying', !$audioState.isPlaying);
-  };
-
-  const handleNextTrack = () => {
-    if ($audioState.repeatMode === RepeatMode.RepeatOne) {
-      (audioRef.current as HTMLAudioElement).currentTime = 0;
-      return;
-    }
-
-    const next = (($audioState.currentTrackIndex ?? -1) + 1) % $audioState.trackList.length;
-    audioStore.setKey('currentTrackIndex', next);
-    audioStore.setKey('currentTrack', $audioState.trackList[next]);
-  };
-
-  const handlePrevTrack = () => {
-    if ($audioState.repeatMode === RepeatMode.RepeatOne) {
-      (audioRef.current as HTMLAudioElement).currentTime = 0;
-      return;
-    }
-
-    const prev = (($audioState.currentTrackIndex ?? 1) - 1 + $audioState.trackList.length) % $audioState.trackList.length;
-    audioStore.setKey('currentTrackIndex', prev);
-    audioStore.setKey('currentTrack', $audioState.trackList[prev]);
-  };
-
-  const handleOnEnded = () => {
-    if ($audioState.isPlaying)
-      if ($audioState.repeatMode === RepeatMode.Off) {
-        $audioState.currentTrackIndex !== $audioState.trackList.length - 1 ? handleNextTrack() : audioStore.setKey('isPlaying', false);
-      } else if ($audioState.repeatMode === RepeatMode.Repeat) {
-        handleNextTrack();
-      }
-  };
 
   const repeat = useCallback(() => {
     if (audioRef.current && progressRef.current) {
@@ -70,25 +35,8 @@ const BottomBar = ({}: Props) => {
     return () => cancelAnimationFrame(playingRef.current as number);
   }, [audioRef, $audioState.isPlaying, repeat]);
 
-  const onLoadedMetadata = () => {
-    if (audioRef.current) {
-      audioStore.setKey('duration', audioRef.current.duration * 1000);
-      audioRef.current.volume = $audioState.volume;
-    }
-  };
-
   return (
     <>
-      {$audioState.currentTrack?.src !== '' && (
-        <audio
-          src={$audioState.currentTrack?.src}
-          ref={audioRef}
-          preload="metadata"
-          onLoadedMetadata={onLoadedMetadata}
-          onEnded={(e) => handleOnEnded()}
-          loop={$audioState.repeatMode === RepeatMode.RepeatOne}
-        />
-      )}
       <div className="bottombar">
         <div className="left">
           <div className="art-cover">
