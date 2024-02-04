@@ -24,9 +24,13 @@ const App = ({ title }: Props) => {
         [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
       }
       shuffled.forEach((track) => (track.order = shuffled.indexOf(track)));
+      const newId = shuffled.find((track) => track.id === $audioState.currentTrack?.id)?.order;
+      if (newId !== undefined) audioStore.setKey('currentTrackIndex', newId);
       audioStore.setKey('trackList', shuffled);
     } else {
       tracks.forEach((track) => (track.order = tracks.indexOf(track)));
+      const newId = tracks.find((track) => track.id === $audioState.currentTrack?.id)?.order;
+      if (newId !== undefined) audioStore.setKey('currentTrackIndex', newId);
       audioStore.setKey('trackList', tracks);
     }
   }, [$audioState.isShuffle]);

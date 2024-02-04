@@ -4,7 +4,7 @@ declare enum TrackType {
   Playlist = 'Playlist'
 }
 
-interface Track {
+interface TrackNoId {
   order: number;
   type: TrackType;
   title: string;
@@ -13,4 +13,8 @@ interface Track {
   thumbnail: ImageMetadata;
   dateAdded: Date;
   duration: string;
+}
+
+interface Track extends TrackNoId {
+  id: string;
 }
