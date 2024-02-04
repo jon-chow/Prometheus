@@ -2,9 +2,10 @@ import { map } from 'nanostores';
 
 import { RepeatMode } from '../enums/RepeatMode';
 
-import { EMPTY_TRACK } from '../data/tracks';
+import { EMPTY_TRACK, tracks } from '../data/tracks';
 
 export const audioStore = map<IAudioState>({
+  trackList: tracks,
   currentTrackIndex: null,
   currentTrack: EMPTY_TRACK,
   isPlaying: false,

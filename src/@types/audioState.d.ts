@@ -5,6 +5,7 @@ declare enum RepeatMode {
 }
 
 interface IAudioState {
+  trackList: Track[];
   currentTrackIndex: number | null;
   currentTrack: Track | null;
   isPlaying: boolean;

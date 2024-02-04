@@ -9,11 +9,9 @@ import Controls from './Controls';
 import ProgressBar from './ProgressBar';
 import { RepeatMode } from '../../enums/RepeatMode';
 
-interface Props {
-  tracks: Track[];
-}
+interface Props {}
 
-const BottomBar = ({ tracks }: Props) => {
+const BottomBar = ({}: Props) => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const progressRef = useRef<HTMLInputElement>(null);
   const playingRef = useRef<number>();
@@ -29,9 +27,10 @@ const BottomBar = ({ tracks }: Props) => {
       (audioRef.current as HTMLAudioElement).currentTime = 0;
       return;
     }
-    const next = (($audioState.currentTrackIndex ?? -1) + 1) % tracks.length;
+
+    const next = (($audioState.currentTrackIndex ?? -1) + 1) % $audioState.trackList.length;
     audioStore.setKey('currentTrackIndex', next);
-    audioStore.setKey('currentTrack', tracks[next]);
+    audioStore.setKey('currentTrack', $audioState.trackList[next]);
   };
 
   const handlePrevTrack = () => {
@@ -39,15 +38,16 @@ const BottomBar = ({ tracks }: Props) => {
       (audioRef.current as HTMLAudioElement).currentTime = 0;
       return;
     }
-    const prev = (($audioState.currentTrackIndex ?? 1) - 1 + tracks.length) % tracks.length;
+
+    const prev = (($audioState.currentTrackIndex ?? 1) - 1 + $audioState.trackList.length) % $audioState.trackList.length;
     audioStore.setKey('currentTrackIndex', prev);
-    audioStore.setKey('currentTrack', tracks[prev]);
+    audioStore.setKey('currentTrack', $audioState.trackList[prev]);
   };
 
   const handleOnEnded = () => {
     if ($audioState.isPlaying)
       if ($audioState.repeatMode === RepeatMode.Off) {
-        $audioState.currentTrackIndex !== tracks.length - 1 ? handleNextTrack() : audioStore.setKey('isPlaying', false);
+        $audioState.currentTrackIndex !== $audioState.trackList.length - 1 ? handleNextTrack() : audioStore.setKey('isPlaying', false);
       } else if ($audioState.repeatMode === RepeatMode.Repeat) {
         handleNextTrack();
       }

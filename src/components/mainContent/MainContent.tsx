@@ -7,11 +7,9 @@ import Card from './Card';
 import { EMPTY_TRACK } from '../../data/tracks';
 import Visualizer from './Visualizer';
 
-interface Props {
-  tracks: Track[];
-}
+interface Props {}
 
-const MainDisplay = ({ tracks }: Props) => {
+const MainDisplay = ({}: Props) => {
   const sidebarRef = useRef<HTMLDivElement>(null);
   const resizerRef = useRef<HTMLDivElement>(null);
 
@@ -68,7 +66,7 @@ const MainDisplay = ({ tracks }: Props) => {
               <div className="length">Track Length</div>
             </li>
             <div className="divider"></div>
-            {tracks.map((track, i) => {
+            {$audioState.trackList.map((track, i) => {
               return (
                 <li key={track.src}>
                   <Card track={track} isCurrentTrack={$audioState.currentTrackIndex === i} />
@@ -85,16 +83,16 @@ const MainDisplay = ({ tracks }: Props) => {
           <div className="container">
             <div className="banner">
               <img
-                className={"art-cover" + ($audioState.isPlaying ? ' playing' : '')}
-                src={$audioState.currentTrackIndex !== null ? tracks[$audioState.currentTrackIndex].thumbnail.src : EMPTY_TRACK.thumbnail.src}
+                className={'art-cover' + ($audioState.isPlaying ? ' playing' : '')}
+                src={$audioState.currentTrackIndex !== null ? $audioState.trackList[$audioState.currentTrackIndex].thumbnail.src : EMPTY_TRACK.thumbnail.src}
                 loading="lazy"
                 decoding="async"
               />
               <div className="text">
-                <h2>{$audioState.currentTrackIndex !== null ? tracks[$audioState.currentTrackIndex].title : EMPTY_TRACK.title}</h2>
+                <h2>{$audioState.currentTrackIndex !== null ? $audioState.trackList[$audioState.currentTrackIndex].title : EMPTY_TRACK.title}</h2>
                 <h4>
-                  {$audioState.currentTrackIndex !== null ? tracks[$audioState.currentTrackIndex].type : EMPTY_TRACK.type}&nbsp;•&nbsp;
-                  {$audioState.currentTrackIndex !== null ? tracks[$audioState.currentTrackIndex].author : EMPTY_TRACK.author}
+                  {$audioState.currentTrackIndex !== null ? $audioState.trackList[$audioState.currentTrackIndex].type : EMPTY_TRACK.type}&nbsp;•&nbsp;
+                  {$audioState.currentTrackIndex !== null ? $audioState.trackList[$audioState.currentTrackIndex].author : EMPTY_TRACK.author}
                 </h4>
               </div>
             </div>

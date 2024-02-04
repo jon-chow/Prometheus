@@ -2,7 +2,7 @@
   grid-area: bottombar;
   display: grid;
   grid-template-areas: 'left center right';
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: 25% auto 20%;
   gap: 5dvw;
   align-items: center;
   padding: 5px 1dvw;
