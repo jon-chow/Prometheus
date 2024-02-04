@@ -10,35 +10,16 @@ import {
   BsArrowCounterclockwise
 } from 'react-icons/bs';
 import { useStore } from '@nanostores/react';
+import { useAudioContext } from '../../contexts/AudioContext';
 import { audioStore } from '../../stores/audioStore.store';
 import { RepeatMode } from '../../enums/RepeatMode';
 
-const SEEK_VALUE = 5;
+interface Props {}
 
-interface Props {
-  audioRef: React.RefObject<HTMLAudioElement>;
-  handleNextTrack: () => void;
-  handlePrevTrack: () => void;
-  handlePlay: (e: React.MouseEvent<HTMLButtonElement>) => void;
-}
+const Controls = ({}: Props) => {
+  const { handleNextTrack, handlePrevTrack, handlePlay, handleSeek, handleShuffle, handleRepeatMode } = useAudioContext();
 
-const Controls = ({ audioRef, handlePrevTrack, handleNextTrack, handlePlay }: Props) => {
   const $audioState = useStore(audioStore);
-
-  const handleRepeatMode = (e: React.MouseEvent<HTMLButtonElement>) => {
-    audioStore.setKey('repeatMode', ($audioState.repeatMode + 1) % (Object.keys(RepeatMode).length / 2));
-  };
-
-  const handleShuffle = (e: React.MouseEvent<HTMLButtonElement>) => {
-    audioStore.setKey('isShuffle', !$audioState.isShuffle);
-  };
-
-  const handleSeek = (e: React.MouseEvent<HTMLButtonElement>, secondsToSkip: number) => {
-    if (audioRef.current) {
-      audioRef.current.currentTime += secondsToSkip;
-      audioStore.setKey('progress', audioRef.current.currentTime * 1000);
-    }
-  };
 
   return (
     <>
@@ -46,19 +27,19 @@ const Controls = ({ audioRef, handlePrevTrack, handleNextTrack, handlePlay }: Pr
         <button className={'shuffle-button' + ($audioState.isShuffle ? ' enabled' : '')} onClick={handleShuffle} title="Shuffle">
           <BsShuffle />
         </button>
-        <button className="seek-backward-button" onClick={(e) => handleSeek(e, -1 * SEEK_VALUE)} title="Seek (-5s)">
+        <button className="seek-backward-button" onClick={(e) => handleSeek(-5)} title="Seek (-5s)">
           <BsArrowCounterclockwise />
         </button>
         <button className="skip-button" onClick={(e) => handlePrevTrack()} title="Previous Track">
           <BsSkipBackwardFill />
         </button>
-        <button className="play-button" onClick={handlePlay} title={$audioState.isPlaying ? 'Pause' : 'Play'}>
+        <button className="play-button" onClick={(e) => handlePlay()} title={$audioState.isPlaying ? 'Pause' : 'Play'}>
           {$audioState.isPlaying ? <BsPauseFill /> : <BsPlayFill />}
         </button>
         <button className="skip-button" onClick={(e) => handleNextTrack()} title="Next Track">
           <BsSkipForwardFill />
         </button>
-        <button className="seek-forward-button" onClick={(e) => handleSeek(e, SEEK_VALUE)} title="Seek (+5s)">
+        <button className="seek-forward-button" onClick={(e) => handleSeek()} title="Seek (+5s)">
           <BsArrowClockwise />
         </button>
         <button className={'repeat-button' + ($audioState.repeatMode === RepeatMode.Off ? '' : ' enabled')} onClick={handleRepeatMode} title="Repeat">

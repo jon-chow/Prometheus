@@ -51,7 +51,10 @@ const AudioContext = createContext({
   handleNextTrack: () => {},
   handlePrevTrack: () => {},
   handleOnEnded: () => {},
-  handlePlay: (e: React.MouseEvent<HTMLButtonElement>) => {}
+  handlePlay: () => {},
+  handleSeek: (secondsToSkip?: number, allowSkip?: boolean) => {},
+  handleShuffle: (e: React.MouseEvent<HTMLButtonElement>) => {},
+  handleRepeatMode: (e: React.MouseEvent<HTMLButtonElement>) => {}
 });
 
 export const useAudioContext = () => useContext(AudioContext);
@@ -99,8 +102,30 @@ const AudioContextProvider = ({ children }: PropsWithChildren) => {
       }
   };
 
-  const handlePlay = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handlePlay = () => {
     if ($audioState.currentTrackIndex !== null) audioStore.setKey('isPlaying', !$audioState.isPlaying);
+  };
+
+  const handleRepeatMode = (e: React.MouseEvent<HTMLButtonElement>) => {
+    audioStore.setKey('repeatMode', ($audioState.repeatMode + 1) % (Object.keys(RepeatMode).length / 2));
+  };
+
+  const handleShuffle = (e: React.MouseEvent<HTMLButtonElement>) => {
+    audioStore.setKey('isShuffle', !$audioState.isShuffle);
+  };
+
+  const handleSeek = (secondsToSkip = 5, allowSkip = false) => {
+    if (audioRef.current) {
+      const newTime = audioRef.current.currentTime + secondsToSkip;
+      if (newTime > audioRef.current.duration && allowSkip) {
+        handleNextTrack();
+      } else if (newTime < 0 && allowSkip) {
+        handlePrevTrack();
+      } else {
+        audioRef.current.currentTime = newTime;
+        audioStore.setKey('progress', audioRef.current.currentTime * 1000);
+      }
+    }
   };
 
   // Shuffle
@@ -123,8 +148,48 @@ const AudioContextProvider = ({ children }: PropsWithChildren) => {
     }
   }, [$audioState.isShuffle]);
 
+  // Keyboard controls
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      switch (e.key) {
+        case 'ArrowRight':
+          e.preventDefault();
+          handleSeek();
+          break;
+        case 'ArrowLeft':
+          e.preventDefault();
+          handleSeek(-5);
+          break;
+        case ' ':
+          e.preventDefault();
+          handlePlay();
+          break;
+        default:
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handlePlay]);
+
   return (
-    <AudioContext.Provider value={{ audioRef, onLoadedMetadata, handleNextTrack, handlePrevTrack, handleOnEnded, handlePlay }}>
+    <AudioContext.Provider
+      value={{
+        audioRef,
+        onLoadedMetadata,
+        handleNextTrack,
+        handlePrevTrack,
+        handleOnEnded,
+        handlePlay,
+        handleSeek,
+        handleShuffle,
+        handleRepeatMode
+      }}
+    >
       {$audioState.currentTrack?.src !== '' && (
         <audio
           src={$audioState.currentTrack?.src}

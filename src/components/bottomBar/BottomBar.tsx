@@ -12,7 +12,7 @@ import ProgressBar from './ProgressBar';
 interface Props {}
 
 const BottomBar = ({}: Props) => {
-  const { audioRef, handleNextTrack, handlePrevTrack, handlePlay } = useAudioContext();
+  const { audioRef, handlePlay } = useAudioContext();
   const progressRef = useRef<HTMLInputElement>(null);
   const playingRef = useRef<number>();
 
@@ -55,7 +55,7 @@ const BottomBar = ({}: Props) => {
 
         <div className="center">
           <div className="player">
-            <Controls audioRef={audioRef} handleNextTrack={handleNextTrack} handlePrevTrack={handlePrevTrack} handlePlay={handlePlay} />
+            <Controls />
             <ProgressBar audioRef={audioRef} progressRef={progressRef} />
           </div>
         </div>
