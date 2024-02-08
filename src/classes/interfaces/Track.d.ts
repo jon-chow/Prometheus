@@ -1,8 +1,9 @@
-declare enum TrackType {
-  Single = 'Single',
-  Album = 'Album',
-  Playlist = 'Playlist'
-}
+declare const TrackType = {
+  Single: 'Single',
+  Album: 'Album',
+  Playlist: 'Playlist'
+} as const;
+type TrackType = typeof TrackType[keyof typeof TrackType];
 
 interface ITrack {
   order: number;
@@ -14,5 +15,4 @@ interface ITrack {
   dateAdded: Date;
   duration: string;
   id?: string | undefined;
-  get thumbnailSource(): string;
 }

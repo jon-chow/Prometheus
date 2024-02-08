@@ -1,13 +1,15 @@
-export enum RepeatMode {
-  Off = 0,
-  Repeat = 1,
-  RepeatOne = 2
-}
+import type { Track } from './Track';
+
+export const RepeatMode = {
+  Off: 0,
+  Repeat: 1,
+  RepeatOne: 2
+} as const;
 
 export class AudioState implements IAudioState {
-  public trackList: ITrack[];
+  public trackList: Track[];
   public currentTrackIndex: number | null;
-  public currentTrack: ITrack | null;
+  public currentTrack: Track | null;
   public isPlaying: boolean;
   public progress: number;
   public duration: number;

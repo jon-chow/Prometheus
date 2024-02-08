@@ -1,8 +1,8 @@
-export enum TrackType {
-  Single = 'Single',
-  Album = 'Album',
-  Playlist = 'Playlist'
-}
+export const TrackType = {
+  Single: 'Single',
+  Album: 'Album',
+  Playlist: 'Playlist'
+} as const;
 
 export class Track implements ITrack {
   public order: number;

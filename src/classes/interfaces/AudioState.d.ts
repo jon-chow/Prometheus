@@ -1,13 +1,14 @@
-declare enum RepeatMode {
-  Off = 0,
-  Repeat = 1,
-  RepeatOne = 2
-}
+declare const RepeatMode = {
+  Off: 0,
+  Repeat: 1,
+  RepeatOne: 2
+} as const;
+type RepeatMode = typeof RepeatMode[keyof typeof RepeatMode];
 
 interface IAudioState {
-  trackList: ITrack[];
+  trackList: Track[];
   currentTrackIndex: number | null;
-  currentTrack: ITrack | null;
+  currentTrack: Track | null;
   isPlaying: boolean;
   progress: number;
   duration: number;

@@ -2,9 +2,10 @@ import { BsPlayFill, BsPauseFill } from 'react-icons/bs';
 import { useStore } from '@nanostores/react';
 import { audioStore } from '../../stores/audioStore.store';
 import '../../styles/Card.scss';
+import type { Track } from '../../classes/implements/Track';
 
 interface Props {
-  track: ITrack;
+  track: Track;
   isCurrentTrack?: boolean;
 }
 
