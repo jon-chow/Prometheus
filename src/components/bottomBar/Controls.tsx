@@ -12,7 +12,7 @@ import {
 import { useStore } from '@nanostores/react';
 import { useAudioContext } from '../../contexts/AudioContext';
 import { audioStore } from '../../stores/audioStore.store';
-import { RepeatMode } from '../../enums/RepeatMode';
+import { RepeatMode } from '../../classes/implements/AudioState';
 
 interface Props {}
 

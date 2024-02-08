@@ -4,17 +4,15 @@ declare enum TrackType {
   Playlist = 'Playlist'
 }
 
-interface TrackNoId {
+interface ITrack {
   order: number;
   type: TrackType;
   title: string;
   src: string;
   author: string;
-  thumbnail: ImageMetadata;
+  thumbnail: ImageMetadata | string;
   dateAdded: Date;
   duration: string;
-}
-
-interface Track extends TrackNoId {
-  id: string;
+  id?: string | undefined;
+  get thumbnailSource(): string;
 }

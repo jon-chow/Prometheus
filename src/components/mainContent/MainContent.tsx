@@ -84,7 +84,11 @@ const MainDisplay = ({}: Props) => {
             <div className="banner">
               <img
                 className={'art-cover' + ($audioState.isPlaying ? ' playing' : '')}
-                src={$audioState.currentTrackIndex !== null ? $audioState.trackList[$audioState.currentTrackIndex].thumbnail.src : EMPTY_TRACK.thumbnail.src}
+                src={
+                  $audioState.currentTrackIndex !== null
+                    ? $audioState.trackList[$audioState.currentTrackIndex].thumbnailSource
+                    : EMPTY_TRACK.thumbnailSource
+                }
                 loading="lazy"
                 decoding="async"
               />
