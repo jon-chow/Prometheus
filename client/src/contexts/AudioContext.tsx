@@ -1,50 +1,10 @@
 import { createContext, useContext, useEffect, useRef, type PropsWithChildren } from 'react';
-import { useFrame } from '@react-three/fiber';
-import { Audio, AudioAnalyser } from 'three';
 import { useStore } from '@nanostores/react';
 import { audioStore } from '../stores/audioStore.store';
 
-import { tracks } from '../data/tracks';
-import { RepeatMode } from '../enums/RepeatMode';
+import { TRACKS } from '../data/tracks';
+import { RepeatMode } from '../classes/implements/AudioState';
 
-/* -------------------------------------------------------------------------- */
-/*                                  ANALYZER                                  */
-/* -------------------------------------------------------------------------- */
-interface AnalyzerProps {
-  sound: React.MutableRefObject<Audio>;
-}
-
-const Analyzer = ({ sound }: AnalyzerProps) => {
-  const meshRef = useRef<any>();
-  const analyzerRef = useRef<AudioAnalyser>();
-
-  const avg = (arr: Uint8Array) => Math.floor(arr.reduce((a, b) => a + b, 0) / arr.length);
-
-  useEffect(() => {
-    analyzerRef.current = new AudioAnalyser(sound.current, 128);
-  });
-
-  useFrame((_) => {
-    if (!analyzerRef.current || !meshRef.current) return;
-    let freqDataArr = analyzerRef.current.getFrequencyData();
-    const kickArr = freqDataArr.slice(0, 10);
-    const zoom = Math.min(avg(kickArr) / 100, 0.7);
-    meshRef.current.scale.set(1, zoom, 1);
-  });
-
-  return (
-    <>
-      <mesh ref={meshRef} scale={1}>
-        <cylinderGeometry args={[0.5, 0.5, 0.01, 32]} />
-        <meshBasicMaterial color={'#9e69da'} />
-      </mesh>
-    </>
-  );
-};
-
-/* -------------------------------------------------------------------------- */
-/*                                AUDIO CONTEXT                               */
-/* -------------------------------------------------------------------------- */
 const AudioContext = createContext({
   audioRef: {} as React.RefObject<HTMLAudioElement>,
   onLoadedMetadata: () => {},
@@ -131,7 +91,7 @@ const AudioContextProvider = ({ children }: PropsWithChildren) => {
   // Shuffle
   useEffect(() => {
     if (audioStore.get().isShuffle) {
-      const shuffled = [...tracks];
+      const shuffled = [...TRACKS];
       for (let i = shuffled.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
@@ -141,10 +101,10 @@ const AudioContextProvider = ({ children }: PropsWithChildren) => {
       if (newId !== undefined) audioStore.setKey('currentTrackIndex', newId);
       audioStore.setKey('trackList', shuffled);
     } else {
-      tracks.forEach((track) => (track.order = tracks.indexOf(track)));
-      const newId = tracks.find((track) => track.id === $audioState.currentTrack?.id)?.order;
+      TRACKS.forEach((track) => (track.order = TRACKS.indexOf(track)));
+      const newId = TRACKS.find((track) => track.id === $audioState.currentTrack?.id)?.order;
       if (newId !== undefined) audioStore.setKey('currentTrackIndex', newId);
-      audioStore.setKey('trackList', tracks);
+      audioStore.setKey('trackList', TRACKS);
     }
   }, [$audioState.isShuffle]);
 
