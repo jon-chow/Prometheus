@@ -1,15 +1,14 @@
-import express, { Express, Request, Response } from 'express';
-import dotenv from 'dotenv';
-
-dotenv.config();
+import express, { Express } from 'express';
+import CONFIGS from './configs';
+import router from './routes';
+import chalk from 'chalk';
 
 const app: Express = express();
-const port = process.env.PORT || 3000;
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!');
-});
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use('/api', router);
 
-app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
+app.listen(CONFIGS.server.port, () => {
+  console.log(chalk.blue.bold(`Server is running at http://${CONFIGS.server.host}:${CONFIGS.server.port}`));
 });
