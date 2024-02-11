@@ -1,0 +1,9 @@
+{
+  "name": "prometheus",
+  "version": "1.0.0",
+  "scripts": {
+    "client": "cd client && pnpm dev",
+    "server": "cd server && pnpm dev",
+    "dev": "\"concurrently\" \"pnpm server\" \"pnpm client\""
+  }
+}

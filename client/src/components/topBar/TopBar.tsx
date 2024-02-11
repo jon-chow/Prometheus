@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { FaFire, FaEllipsisH, FaBell } from 'react-icons/fa';
+import api from '../../api';
 import '../../styles/TopBar.scss';
 
 interface Props {
@@ -10,15 +11,15 @@ const TopBar = ({ header }: Props) => {
   const [ellipsisMenuToggled, setEllipsisMenuToggled] = useState(false);
   const [bellMenuToggled, setBellMenuToggled] = useState(false);
 
-  const toggleEllipsis = (e: any) => {
+  const toggleEllipsis = (e: React.MouseEvent) => {
     setEllipsisMenuToggled(!ellipsisMenuToggled);
   };
 
-  const toggleBell = (e: any) => {
+  const toggleBell = (e: React.MouseEvent) => {
     setBellMenuToggled(!bellMenuToggled);
   };
 
-  const hideMenus = (e: any) => {
+  const hideMenus = (e: React.MouseEvent) => {
     setEllipsisMenuToggled(false);
     setBellMenuToggled(false);
   };
@@ -26,7 +27,7 @@ const TopBar = ({ header }: Props) => {
   return (
     <>
       <div className="topbar">
-        <div className="menu-button ellipsis" onClick={(e) => toggleEllipsis(e)}>
+        <div className="menu-button ellipsis" onClick={toggleEllipsis}>
           <FaEllipsisH />
         </div>
         <div className="header">
@@ -35,12 +36,12 @@ const TopBar = ({ header }: Props) => {
           </div>
           <h1>{header}</h1>
         </div>
-        <div className="menu-button bell" onClick={(e) => toggleBell(e)}>
+        <div className="menu-button bell" onClick={toggleBell}>
           <FaBell />
         </div>
       </div>
 
-      <div className={'modal-wrapper' + (ellipsisMenuToggled || bellMenuToggled ? '' : ' hidden')} onClick={(e) => hideMenus(e)}>
+      <div className={'modal-wrapper' + (ellipsisMenuToggled || bellMenuToggled ? '' : ' hidden')} onClick={hideMenus}>
         <div className={'menu ellipsis-menu' + (ellipsisMenuToggled ? '' : ' hidden')}>
           <div className="menu-item">Menu Item 1</div>
           <div className="menu-item">Menu Item 2</div>
