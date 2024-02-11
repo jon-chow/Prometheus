@@ -55,40 +55,28 @@ export async function getAllSongsByGenre(req: Request, res: Response) {
   const errors = validationResult(req);
   if (errors.isEmpty()) {
     const id = req.params?.id;
-    let genre = '';
-
-    // First check if the genre exists
-    db.query('SELECT genre_name FROM genres WHERE genre_id = ?', [id]).then(
-      (data) => {
-        const rows = data[0];
-        if (!rows) {
+    db.query('CALL spGetSongsByGenreId(?)', [id])
+      .then((data) => {
+        const [genre, songs] = data;
+        const genreName = (genre[0] as any).genre;
+        if (!genreName) {
           res.status(404).json({ error: `Genre with id ${id} not found` });
           return;
         }
-
-        // Then query for the songs
-        genre = JSON.parse(JSON.stringify(rows)).genre_name;
-        db.query('SELECT * FROM songs WHERE song_genre = ?', [id])
-          .then((songs) => {
-            if (!songs) {
-              res.status(404).json({ error: `No '${genre}' songs found` });
-              return;
-            }
-            res.status(200).json({ genre, songs });
-          })
-          .catch((err) => {
-            res.status(500).json({ error: `Internal server error: ${err.message}` });
-          });
-      }
-    )
+        res.status(200).json({ genre: genreName, count: songs.length, songs });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: `Internal server error: ${err.message}` });
+      });
   } else {
     res.status(400).json({ error: errors.array() });
   }
 }
 
-export async function getMostListenedSongs(_req: Request, res: Response) {
-  db.query('SELECT * FROM songs ORDER BY song_listens DESC LIMIT 10', [])
-    .then((songs) => {
+export async function getTopListenedToSongs(_req: Request, res: Response) {
+  db.query('CALL spGetTopListenedToSongs(5)', [])
+    .then((data) => {
+      const [songs] = data;
       if (!songs) {
         res.status(404).json({ error: 'No songs found' });
         return;

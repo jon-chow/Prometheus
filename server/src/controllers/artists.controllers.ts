@@ -41,30 +41,19 @@ export async function getAllArtistsByGenre(req: Request, res: Response) {
   const errors = validationResult(req);
   if (errors.isEmpty()) {
     const id = req.params?.id;
-    let genre = '';
-
-    // First check if the genre exists
-    db.query('SELECT genre_name FROM genres WHERE genre_id = ?', [id]).then((data) => {
-      const rows = data[0];
-      if (!rows) {
-        res.status(404).json({ error: `Genre with id ${id} not found` });
-        return;
-      }
-
-      // Then query for the artists
-      genre = JSON.parse(JSON.stringify(rows)).genre_name;
-      db.query('SELECT * FROM artists WHERE artist_main_genre = ?', [id])
-        .then((artists) => {
-          if (!artists) {
-            res.status(404).json({ error: `No '${genre}' artists found` });
-            return;
-          }
-          res.status(200).json({ genre, artists });
-        })
-        .catch((err) => {
-          res.status(500).json({ error: `Internal server error: ${err.message}` });
-        });
-    });
+    db.query('CALL spGetArtistsByGenreId(?)', [id])
+      .then((data) => {
+        const [genre, artists] = data;
+        const genreName = (genre[0] as any).genre;
+        if (!genreName) {
+          res.status(404).json({ error: `Genre with id ${id} not found` });
+          return;
+        }
+        res.status(200).json({ genre: genreName, count: artists.length, artists });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: `Internal server error: ${err.message}` });
+      });
   } else {
     res.status(400).json({ error: errors.array() });
   }
