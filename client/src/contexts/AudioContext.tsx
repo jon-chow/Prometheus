@@ -24,13 +24,6 @@ const AudioContextProvider = ({ children }: PropsWithChildren) => {
 
   const $audioState = useStore(audioStore);
 
-  // Load track list
-  useEffect(() => { 
-    fetchAllTracks().then((tracks) => {
-      audioStore.setKey('trackList', tracks);
-    });
-  }, []);
-
   const onLoadedMetadata = () => {
     if (audioRef.current) {
       audioStore.setKey('duration', audioRef.current.duration * 1000);
@@ -74,7 +67,7 @@ const AudioContextProvider = ({ children }: PropsWithChildren) => {
   };
 
   const handleRepeatMode = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const mode = ($audioState.repeatMode + 1) % (Object.keys(RepeatMode).length);
+    const mode = ($audioState.repeatMode + 1) % Object.keys(RepeatMode).length;
     const key = Object.keys(RepeatMode).at(mode) as keyof typeof RepeatMode;
     audioStore.setKey('repeatMode', RepeatMode[key]);
   };
@@ -97,7 +90,14 @@ const AudioContextProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  // Shuffle
+  // Load track list
+  useEffect(() => {
+    fetchAllTracks().then((tracks) => {
+      audioStore.setKey('trackList', tracks);
+    });
+  }, []);
+
+  // Handle shuffle functionality
   useEffect(() => {
     if (audioStore.get().isShuffle) {
       const shuffled = audioStore.get().trackList;
@@ -110,11 +110,13 @@ const AudioContextProvider = ({ children }: PropsWithChildren) => {
       if (newId !== undefined) audioStore.setKey('currentTrackIndex', newId);
       audioStore.setKey('trackList', shuffled);
     } else {
-      const TRACKS = audioStore.get().trackList;
-      TRACKS.forEach((track) => (track.order = TRACKS.indexOf(track)));
-      const newId = TRACKS.find((track) => track.id === $audioState.currentTrack?.id)?.order;
+      let unshuffledTracks = audioStore.get().trackList.map((track) => {
+        track.order = track.unshuffledOrder;
+        return track;
+      });
+      const newId = unshuffledTracks.find((track) => track.id === $audioState.currentTrack?.id)?.order;
       if (newId !== undefined) audioStore.setKey('currentTrackIndex', newId);
-      audioStore.setKey('trackList', TRACKS);
+      audioStore.setKey('trackList', unshuffledTracks.sort((a, b) => a.order - b.order));
     }
   }, [$audioState.isShuffle]);
 

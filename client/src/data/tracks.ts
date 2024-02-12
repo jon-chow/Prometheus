@@ -16,6 +16,7 @@ export const fetchAllTracks = async (): Promise<Track[]> =>
           return new Track({
             id: tracks.song_id,
             order: index,
+            unshuffledOrder: index,
             type: TrackType.Single,
             title: tracks.song_title,
             src: tracks.song_src,
@@ -34,6 +35,7 @@ export const fetchAllTracks = async (): Promise<Track[]> =>
 export const EMPTY_TRACK: Track = new Track({
   id: 'EMPTY_TRACK',
   order: -1,
+  unshuffledOrder: -1,
   type: TrackType.Single,
   title: 'Song Title',
   src: '',

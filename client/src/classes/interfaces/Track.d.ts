@@ -7,6 +7,7 @@ type TrackType = typeof TrackType[keyof typeof TrackType];
 
 interface ITrack {
   order: number;
+  unshuffledOrder: number;
   type: TrackType;
   title: string;
   src: string;

@@ -6,6 +6,7 @@ export const TrackType = {
 
 export class Track implements ITrack {
   public order: number;
+  public unshuffledOrder: number;
   public readonly type: TrackType;
   public readonly title: string;
   public readonly src: string;
@@ -15,8 +16,9 @@ export class Track implements ITrack {
   public readonly duration: string;
   public readonly id: string | undefined;
 
-  constructor({ order, type, title, src, author, thumbnail, dateAdded, duration, id = undefined }: ITrack) {
+  constructor({ order, unshuffledOrder, type, title, src, author, thumbnail, dateAdded, duration, id = undefined }: ITrack) {
     this.order = order;
+    this.unshuffledOrder = unshuffledOrder;
     this.type = type;
     this.title = title;
     this.src = src;
