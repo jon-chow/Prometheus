@@ -3,8 +3,9 @@ import { validationResult } from 'express-validator';
 import { db } from '../database';
 
 export async function getAllSongs(_req: Request, res: Response) {
-  db.query('SELECT * FROM songs', [])
-    .then((songs) => {
+  db.query('CALL spGetAllSongs()', [])
+    .then((data) => {
+      const songs = data[0];
       if (!songs) {
         res.status(404).json({ error: 'No songs found' });
         return;

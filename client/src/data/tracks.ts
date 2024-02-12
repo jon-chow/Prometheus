@@ -19,7 +19,7 @@ export const fetchAllTracks = async (): Promise<Track[]> =>
             type: TrackType.Single,
             title: tracks.song_title,
             src: tracks.song_src,
-            author: tracks.song_artist_id,
+            author: tracks.song_artist_name,
             thumbnail: tracks.song_art_cover,
             dateAdded: new Date(tracks.song_date_added),
             duration: convertSecondsToMinutesAndSeconds(tracks.song_duration)
