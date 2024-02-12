@@ -24,7 +24,7 @@ export class Track implements ITrack {
     this.thumbnail = thumbnail;
     this.dateAdded = dateAdded;
     this.duration = duration;
-    this.id = title + '-' + author + '-' + duration + '-' + dateAdded || id;
+    this.id = id;
   }
 
   public get thumbnailSource(): string {

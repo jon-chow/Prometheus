@@ -1,9 +1,9 @@
 {
-  "name": "prometheus",
-  "version": "1.0.0",
-  "scripts": {
-    "client": "cd client && pnpm dev",
-    "server": "cd server && pnpm dev",
-    "dev": "\"concurrently\" \"pnpm server\" \"pnpm client\""
-  }
+	"name": "prometheus",
+	"version": "1.0.0",
+	"scripts": {
+		"rc": "cd client && pnpm dev",
+		"rs": "cd server && pnpm dev",
+		"dev": "concurrently -kill-others \"pnpm rc\" \"pnpm rs\""
+	}
 }

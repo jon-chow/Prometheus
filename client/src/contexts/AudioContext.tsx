@@ -2,8 +2,8 @@ import { createContext, useContext, useEffect, useRef, type PropsWithChildren } 
 import { useStore } from '@nanostores/react';
 import { audioStore } from '../stores/audioStore.store';
 
-import { TRACKS } from '../data/tracks';
 import { RepeatMode } from '../classes/implements/AudioState';
+import { fetchAllTracks } from '../data/tracks';
 
 const AudioContext = createContext({
   audioRef: {} as React.RefObject<HTMLAudioElement>,
@@ -23,6 +23,13 @@ const AudioContextProvider = ({ children }: PropsWithChildren) => {
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const $audioState = useStore(audioStore);
+
+  // Load track list
+  useEffect(() => { 
+    fetchAllTracks().then((tracks) => {
+      audioStore.setKey('trackList', tracks);
+    });
+  }, []);
 
   const onLoadedMetadata = () => {
     if (audioRef.current) {
@@ -67,7 +74,9 @@ const AudioContextProvider = ({ children }: PropsWithChildren) => {
   };
 
   const handleRepeatMode = (e: React.MouseEvent<HTMLButtonElement>) => {
-    audioStore.setKey('repeatMode', ($audioState.repeatMode + 1) % (Object.keys(RepeatMode).length / 2));
+    const mode = ($audioState.repeatMode + 1) % (Object.keys(RepeatMode).length);
+    const key = Object.keys(RepeatMode).at(mode) as keyof typeof RepeatMode;
+    audioStore.setKey('repeatMode', RepeatMode[key]);
   };
 
   const handleShuffle = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -91,7 +100,7 @@ const AudioContextProvider = ({ children }: PropsWithChildren) => {
   // Shuffle
   useEffect(() => {
     if (audioStore.get().isShuffle) {
-      const shuffled = [...TRACKS];
+      const shuffled = audioStore.get().trackList;
       for (let i = shuffled.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
@@ -101,6 +110,7 @@ const AudioContextProvider = ({ children }: PropsWithChildren) => {
       if (newId !== undefined) audioStore.setKey('currentTrackIndex', newId);
       audioStore.setKey('trackList', shuffled);
     } else {
+      const TRACKS = audioStore.get().trackList;
       TRACKS.forEach((track) => (track.order = TRACKS.indexOf(track)));
       const newId = TRACKS.find((track) => track.id === $audioState.currentTrack?.id)?.order;
       if (newId !== undefined) audioStore.setKey('currentTrackIndex', newId);
