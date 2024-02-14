@@ -1,7 +1,7 @@
-import BottomBar from './bottomBar/BottomBar';
-import MainContent from './mainContent/MainContent';
-import TopBar from './topBar/TopBar';
-import AudioContextProvider from '../contexts/AudioContext';
+import BottomBar from './components/BottomBar';
+import MainContent from './components/MainContent';
+import TopBar from './components/TopBar';
+import AudioContextProvider from './contexts/AudioContext';
 
 interface Props {
   title: string;

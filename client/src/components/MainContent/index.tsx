@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react';
 import { useStore } from '@nanostores/react';
 import { audioStore } from '../../stores/audioStore.store';
-import '../../styles/MainContent.scss';
+import './MainContent.scss';
 
-import Card from './Card';
+import Card from '../Card';
 import { EMPTY_TRACK } from '../../data/tracks';
 import Visualizer from './Visualizer';
 
@@ -66,13 +66,14 @@ const MainDisplay = ({}: Props) => {
               <div className="length">Track Length</div>
             </li>
             <div className="divider"></div>
-            {$audioState.trackList.map((track, i) => {
+            { $audioState.trackList ?
+            $audioState.trackList.map((track, i) => {
               return (
                 <li key={track.src}>
                   <Card track={track} isCurrentTrack={$audioState.currentTrackIndex === i} />
                 </li>
               );
-            })}
+            }) : null}
           </ul>
         </div>
         <div className="resizer" ref={resizerRef} />

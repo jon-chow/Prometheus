@@ -93,7 +93,7 @@ const Visualizer = ({}: Props) => {
 
         <Suspense fallback={<LoadingScreen />}>
           <Physics>
-            <Sound />
+            {/* <Sound /> */}
             <Experience />
           </Physics>
         </Suspense>

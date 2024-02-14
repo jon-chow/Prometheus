@@ -1,0 +1,50 @@
+:root {
+  --color-header: #fff;
+  --color-subheader: #ccc;
+}
+html {
+  font-family: system-ui, sans-serif;
+  user-select: none;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  * {
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+  }
+
+  main {
+    color: white;
+    font-size: 20px;
+    line-height: 1.6;
+  }
+
+  img {
+    height: auto;
+    max-width: 100%;
+    pointer-events: none;
+  }
+}
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #eee;
+  border-radius: 5px;
+}
+code {
+  font-family:
+    Menlo,
+    Monaco,
+    Lucida Console,
+    Liberation Mono,
+    DejaVu Sans Mono,
+    Bitstream Vera Sans Mono,
+    Courier New,
+    monospace;
+}

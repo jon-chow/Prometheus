@@ -3,7 +3,7 @@ import { BsPlayFill, BsPauseFill } from 'react-icons/bs';
 import { useStore } from '@nanostores/react';
 import { useAudioContext } from '../../contexts/AudioContext';
 import { audioStore } from '../../stores/audioStore.store';
-import '../../styles/BottomBar.scss';
+import './BottomBar.scss';
 
 import VolumeSlider from './VolumeSlider';
 import Controls from './Controls';

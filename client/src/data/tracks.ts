@@ -29,7 +29,7 @@ export const fetchAllTracks = async (): Promise<Track[]> =>
       }
     })
     .catch((error) => {
-      console.log(error);
+      console.log(error.message);
     });
 
 export const EMPTY_TRACK: Track = new Track({

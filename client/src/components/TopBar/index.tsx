@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaFire, FaEllipsisH, FaBell } from 'react-icons/fa';
-import '../../styles/TopBar.scss';
+import './TopBar.scss';
 
 interface Props {
   header: string;

@@ -4,6 +4,8 @@ interface Props {
 }
 
 const { title } = Astro.props;
+
+import "../styles/global.scss";
 ---
 
 <!doctype html>
@@ -21,50 +23,7 @@ const { title } = Astro.props;
   </body>
 </html>
 <style is:global lang="scss">
-  :root {
-    --color-header: #fff;
-    --color-subheader: #ccc;
-  }
   html {
-    font-family: system-ui, sans-serif;
     background: #151119;
-    background-size: 224px;
-    user-select: none;
-    overflow: hidden;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-
-    * {
-      margin: 0;
-      padding: 0;
-      white-space: nowrap;
-    }
-
-    img {
-      height: auto;
-      max-width: 100%;
-      pointer-events: none;
-    }
-  }
-  ::-webkit-scrollbar {
-    width: 10px;
-  }
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #eee;
-    border-radius: 5px;
-  }
-  code {
-    font-family:
-      Menlo,
-      Monaco,
-      Lucida Console,
-      Liberation Mono,
-      DejaVu Sans Mono,
-      Bitstream Vera Sans Mono,
-      Courier New,
-      monospace;
   }
 </style>
