@@ -1,25 +1,57 @@
 .topbar {
   grid-area: topbar;
+  position: sticky;
+  z-index: 100;
+  top: 0;
   display: flex;
   align-items: center;
   padding: 5px 1dvw;
   flex: 1;
   height: 100%;
   font-size: medium;
+  background: var(--primary-darker-color);
   color: white;
 
   .menu-button {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 40px;
     width: 40px;
-    border-radius: 50%;
-    font-size: 1.5rem;
     cursor: pointer;
     transition: all 0.2s ease;
-    &:hover {
-      background: rgba(193, 138, 245, 0.1);
+
+    &.bell {
+      font-size: 1.6rem;
+    }
+
+    .bar {
+      position: absolute;
+      height: 3px;
+      width: 28px;
+      background: white;
+      transition: all 0.2s ease;
+      &:nth-child(1) {
+        transform: translateY(-8px);
+      }
+      &:nth-child(3) {
+        transform: translateY(8px);
+      }
+    }
+      
+    &[data-toggled='true'] {
+      .bar {
+        &:nth-child(1) {
+          transform: translateY(0) rotate(45deg);
+        }
+        &:nth-child(2) {
+          opacity: 0;
+        }
+        &:nth-child(3) {
+          transform: translateY(0) rotate(-45deg);
+        }
+      }
     }
   }
 
@@ -41,76 +73,21 @@
 }
 
 .modal-wrapper {
-  position: fixed;
-  top: 0;
+  position: absolute;
+  top: 53px;
   left: 0;
   z-index: 100;
-  height: 100vh;
+  height: calc(100vh - 53px);
   width: 100vw;
   display: flex;
-  justify-content: center;
   align-items: flex-start;
-  &.hidden {
-    visibility: hidden;
+  transition: all 0.2s ease;
+  &[data-backdrop='true'] {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
   }
-
-  .menu {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    background: #28202d;
-    border-radius: 5px;
-    padding: 10px;
-    z-index: 100;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    transition: all 0.2s ease;
-    &.hidden {
-      visibility: hidden;
-      opacity: 0;
-    }
-
-    &.ellipsis-menu {
-      top: 50px;
-      left: 10px;
-      gap: 10px;
-      width: 200px;
-
-      .menu-item {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        gap: 10px;
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: medium;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        &:hover {
-          background: rgba(193, 138, 245, 0.1);
-        }
-      }
-    }
-
-    &.bell-menu {
-      top: 50px;
-      right: 10px;
-      gap: 10px;
-      width: 300px;
-
-      .menu-item {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        gap: 10px;
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: medium;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        &:hover {
-          background: rgba(193, 138, 245, 0.1);
-        }
-      }
-    }
+  &[data-enabled='false'] {
+    visibility: hidden;
+    opacity: 0;
   }
 }

@@ -1,7 +1,12 @@
 :root {
   --color-header: #fff;
   --color-subheader: #ccc;
+  
+  --primary-color: #482469;
+  --primary-dark-color: #2c153a;
+  --primary-darker-color: #151119;
 }
+
 html {
   font-family: system-ui, sans-serif;
   user-select: none;

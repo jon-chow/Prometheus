@@ -1,0 +1,40 @@
+.bell-menu {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  left: calc(100dvw - 20dvw - 20px);
+  gap: 10px;
+  padding: 10px;
+  height: auto;
+  width: 20dvw;
+  z-index: 10;
+  background: var(--primary-dark-color);
+  box-shadow: 0 0 10px #000;
+  transition: all 0.2s ease;
+  animation: fadeIn 0.3s ease;
+  &[data-enabled='false'] {
+    animation: fadeOut 0.3s ease;
+  }
+  @keyframes fadeIn {
+    0% { max-height: 0; }
+    100% { max-height: 80dvh; }
+  }
+  @keyframes fadeOut {
+    0% { max-height: 80dvh; }
+    100% { max-height: 0; }
+  }
+
+  .menu-item {
+    padding: 15px;
+    border-radius: 5px;
+    color: var(--color-header);
+    font-size: large;
+    cursor: pointer;
+    transition: all 0.2s ease;
+      background: rgba(255, 255, 255, 0.05);
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+  }
+}

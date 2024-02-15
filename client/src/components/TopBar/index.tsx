@@ -1,33 +1,43 @@
 import React, { useState } from 'react';
-import { FaFire, FaEllipsisH, FaBell } from 'react-icons/fa';
+import { FaFire, FaBell } from 'react-icons/fa';
 import './TopBar.scss';
 
-interface Props {
+import HamburgerMenu from './HamburgerMenu';
+import BellMenu from './BellMenu';
+import useTransition from '../../hooks/TransitionHook';
+
+export interface TopBarProps {
   header: string;
 }
 
-const TopBar = ({ header }: Props) => {
-  const [ellipsisMenuToggled, setEllipsisMenuToggled] = useState(false);
+const TopBar = ({ header }: TopBarProps) => {
+  const [hamburgerMenuToggled, setHamburgerMenuToggled] = useState(false);
   const [bellMenuToggled, setBellMenuToggled] = useState(false);
+  const hamburgerMenuMounted = useTransition(hamburgerMenuToggled, 250);
+  const bellMenuMounted = useTransition(bellMenuToggled, 250);
 
-  const toggleEllipsis = (e: React.MouseEvent) => {
-    setEllipsisMenuToggled(!ellipsisMenuToggled);
+  const toggleHamburger = (e: React.MouseEvent) => {
+    setHamburgerMenuToggled(!hamburgerMenuToggled);
+    setBellMenuToggled(false);
   };
 
   const toggleBell = (e: React.MouseEvent) => {
     setBellMenuToggled(!bellMenuToggled);
+    setHamburgerMenuToggled(false);
   };
 
   const hideMenus = (e: React.MouseEvent) => {
-    setEllipsisMenuToggled(false);
+    setHamburgerMenuToggled(false);
     setBellMenuToggled(false);
   };
 
   return (
     <>
       <div className="topbar">
-        <div className="menu-button ellipsis" onClick={toggleEllipsis}>
-          <FaEllipsisH />
+        <div className="menu-button hamburger" onClick={toggleHamburger} data-toggled={hamburgerMenuToggled}>
+          <div className="bar" />
+          <div className="bar" />
+          <div className="bar" />
         </div>
         <div className="header">
           <div className="logo">
@@ -40,18 +50,23 @@ const TopBar = ({ header }: Props) => {
         </div>
       </div>
 
-      <div className={'modal-wrapper' + (ellipsisMenuToggled || bellMenuToggled ? '' : ' hidden')} onClick={hideMenus}>
-        <div className={'menu ellipsis-menu' + (ellipsisMenuToggled ? '' : ' hidden')}>
-          <div className="menu-item">Menu Item 1</div>
-          <div className="menu-item">Menu Item 2</div>
-          <div className="menu-item">Menu Item 3</div>
-        </div>
-
-        <div className={'menu bell-menu' + (bellMenuToggled ? '' : ' hidden')}>
-          <div className="menu-item">Menu Item 1</div>
-          <div className="menu-item">Menu Item 2</div>
-          <div className="menu-item">Menu Item 3</div>
-        </div>
+      <div className="modal-wrapper" onClick={hideMenus} data-backdrop={hamburgerMenuToggled} data-enabled={hamburgerMenuToggled || bellMenuToggled}>
+        {hamburgerMenuMounted && (
+          <HamburgerMenu
+            enabled={hamburgerMenuToggled}
+            onAnimationEnd={() => {
+              if (!hamburgerMenuToggled) setHamburgerMenuToggled(false);
+            }}
+          />
+        )}
+        {bellMenuMounted && (
+          <BellMenu
+            enabled={bellMenuToggled}
+            onAnimationEnd={() => {
+              if (!bellMenuToggled) setBellMenuToggled(false);
+            }}
+          />
+        )}
       </div>
     </>
   );
