@@ -6,7 +6,7 @@ export default {
   component: TopBar
 };
 
-const Template: StoryFn<TopBarProps> = (args) => <TopBar {...args} />;
+const Template: StoryFn<TopBarProps> = args => <TopBar {...args} />;
 
 export const Default = Template.bind({ });
 Default.args = {

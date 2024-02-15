@@ -1,28 +1,32 @@
 .bottombar {
+  position: fixed;
+  box-sizing: content-box;
+  justify-content: space-around;
   grid-area: bottombar;
   display: grid;
+  bottom: 0;
   grid-template-areas: 'left center right';
-  grid-template-columns: 25% auto 20%;
-  gap: 5dvw;
+  grid-template-columns: calc(25dvw - 2dvi) 50dvw calc(25dvw - 2dvi);
   align-items: center;
-  padding: 5px 1dvw;
   flex: 1;
-  height: 100%;
+  height: 10dvb;
+  width: 100%;
+  gap: 10px;
+  background: var(--primary-darker-color);
 
   .left,
   .center,
   .right {
     display: flex;
-    justify-content: center;
     align-items: center;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
   }
 
   .left {
-    grid-area: left;
-    display: flex;
-    justify-self: flex-start;
-    padding-left: 10px;
     gap: 15px;
+    padding: 0 4dvi 0 2dvi;
 
     .art-cover {
       position: relative;
@@ -90,26 +94,27 @@
   }
 
   .center {
-    grid-area: center;
+    justify-content: center;
+    align-self: center;
 
     .player {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      width: 100%;
 
       .controls {
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 30px;
+        gap: 22pt;
 
         button {
           display: flex;
           justify-content: center;
           align-items: center;
           border: none;
-          border-radius: 0.5vh;
           background: none;
           color: #aaa;
           font-size: 1.5rem;
@@ -145,10 +150,9 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 15px;
-        padding: 0 15vw;
+        box-sizing: content-box;
+        gap: 12pt;
         width: 100%;
-        min-height: 2.5dvh;
 
         input.progress-bar[type='range'] {
           -webkit-appearance: none;
@@ -191,22 +195,20 @@
   }
 
   .right {
-    display: flex;
-    justify-self: flex-end;
-    grid-area: right;
-    padding-right: 10px;
-
+    justify-content: flex-end;
+    padding-right: 2dvi;
+    
     .volume {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 15px;
+      gap: 12pt;
 
       .volume-icon {
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 1.5rem;
+        font-size: 1.75rem;
         border: none;
         background: none;
         color: #aaa;
@@ -221,9 +223,9 @@
         -webkit-appearance: none;
         appearance: none;
         outline: none;
+        box-sizing: content-box;
         width: 100%;
-        top: 1px;
-        height: 5px;
+        height: 6px;
         background: #aaa;
         border-radius: 0.5vh;
         position: relative;
@@ -237,8 +239,8 @@
           -webkit-appearance: none;
           appearance: none;
           visibility: hidden;
-          width: 12px;
-          height: 12px;
+          width: 10pt;
+          height: 10pt;
           border-radius: 50%;
           background: #fff;
           border: 2px solid #aaa;

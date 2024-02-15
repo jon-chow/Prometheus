@@ -18,11 +18,12 @@ html {
     margin: 0;
     padding: 0;
     white-space: nowrap;
+    box-sizing: border-box;
   }
 
   main {
     color: white;
-    font-size: 20px;
+    font-size: 20pt;
     line-height: 1.6;
   }
 

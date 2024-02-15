@@ -11,7 +11,11 @@ const preview: Preview = {
         date: /Date$/i
       }
     },
-    layout: 'fullscreen'
+    layout: 'fullscreen',
+    backgrounds: {
+      default: 'dark'
+    },
+    
   }
 };
 

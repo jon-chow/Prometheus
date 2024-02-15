@@ -9,9 +9,9 @@ import VolumeSlider from './VolumeSlider';
 import Controls from './Controls';
 import ProgressBar from './ProgressBar';
 
-interface Props {}
+export interface BottomBarProps {}
 
-const BottomBar = ({}: Props) => {
+const BottomBar = ({}: BottomBarProps) => {
   const { audioRef, handlePlay } = useAudioContext();
   const progressRef = useRef<HTMLInputElement>(null);
   const playingRef = useRef<number>();

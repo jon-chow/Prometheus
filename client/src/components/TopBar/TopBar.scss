@@ -23,7 +23,7 @@
     transition: all 0.2s ease;
 
     &.bell {
-      font-size: 1.6rem;
+      font-size: 20pt;
     }
 
     .bar {
@@ -60,13 +60,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 6px;
+    gap: 2pt;
 
     .logo {
       display: flex;
       height: 100%;
       width: auto;
-      font-size: 2rem;
+      font-size: 20pt;
       color: #f69918;
     }
   }
