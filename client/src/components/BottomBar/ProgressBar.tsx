@@ -6,7 +6,6 @@ interface Props {
   progressRef: React.RefObject<HTMLInputElement>;
 }
 
-// TODO: fix seeking
 const ProgressBar = ({ audioRef, progressRef }: Props) => {
   const $audioState = useStore(audioStore);
 
@@ -34,6 +33,7 @@ const ProgressBar = ({ audioRef, progressRef }: Props) => {
         <div className="time-elapsed">{formatTime($audioState.progress)}</div>
         <input
           className="progress-bar"
+          role="slider"
           ref={progressRef}
           type="range"
           defaultValue="0"

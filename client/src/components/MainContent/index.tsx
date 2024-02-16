@@ -7,9 +7,9 @@ import Card from '../Card';
 import { EMPTY_TRACK } from '../../data/tracks';
 import Visualizer from './Visualizer';
 
-interface Props {}
+export interface MainContentProps {}
 
-const MainDisplay = ({}: Props) => {
+const MainDisplay = ({}: MainContentProps) => {
   const sidebarRef = useRef<HTMLDivElement>(null);
   const resizerRef = useRef<HTMLDivElement>(null);
 
@@ -37,7 +37,7 @@ const MainDisplay = ({}: Props) => {
       document.body.style.cursor = 'col-resize';
 
       const elements = [...document.getElementsByClassName('date'), ...document.getElementsByClassName('length')];
-      if (newLeftWidth < 18) elements.forEach((element) => ((element as HTMLElement).style.display = 'none'));
+      if (newLeftWidth < 20) elements.forEach((element) => ((element as HTMLElement).style.display = 'none'));
       else elements.forEach((element) => ((element as HTMLElement).style.display = 'block'));
     }
 
@@ -58,23 +58,20 @@ const MainDisplay = ({}: Props) => {
     <>
       <div className="main">
         <div className="sidebar" ref={sidebarRef}>
-          <ul>
-            <li className="headers">
+          <ul className="headers">
+            <li>
               <div className="order">#</div>
               <div className="title">Title</div>
               <div className="date">Date Added</div>
               <div className="length">Track Length</div>
             </li>
-            <div className="divider"></div>
-            { $audioState.trackList ?
-            $audioState.trackList.map((track, i) => {
-              return (
-                <li key={track.src}>
-                  <Card track={track} isCurrentTrack={$audioState.currentTrackIndex === i} />
-                </li>
-              );
-            }) : null}
+            <div className="divider" />
           </ul>
+          <div className="tracklist">
+            { $audioState.trackList
+              ? $audioState.trackList.map((track, i) => <Card key={track.src}  track={track} isCurrentTrack={$audioState.currentTrackIndex === i} />)
+              : null}
+          </div>
         </div>
         <div className="resizer" ref={resizerRef} />
         <div className="content">
@@ -84,11 +81,10 @@ const MainDisplay = ({}: Props) => {
           <div className="container">
             <div className="banner">
               <img
-                className={'art-cover' + ($audioState.isPlaying ? ' playing' : '')}
+                className="art-cover"
+                data-playing={$audioState.isPlaying}
                 src={
-                  $audioState.currentTrackIndex !== null
-                    ? $audioState.trackList[$audioState.currentTrackIndex].thumbnailSource
-                    : EMPTY_TRACK.thumbnailSource
+                  $audioState.currentTrackIndex !== null ? $audioState.trackList[$audioState.currentTrackIndex].thumbnailSource : EMPTY_TRACK.thumbnailSource
                 }
                 loading="lazy"
                 decoding="async"

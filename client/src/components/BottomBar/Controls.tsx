@@ -24,7 +24,7 @@ const Controls = ({}: Props) => {
   return (
     <>
       <div className="controls">
-        <button className={'shuffle-button' + ($audioState.isShuffle ? ' enabled' : '')} onClick={handleShuffle} title="Shuffle">
+        <button className="shuffle-button" data-active={$audioState.isShuffle} onClick={handleShuffle} title="Shuffle">
           <BsShuffle />
         </button>
         <button className="seek-backward-button" onClick={(e) => handleSeek(-5)} title="Seek (-5s)">
@@ -42,7 +42,7 @@ const Controls = ({}: Props) => {
         <button className="seek-forward-button" onClick={(e) => handleSeek()} title="Seek (+5s)">
           <BsArrowClockwise />
         </button>
-        <button className={'repeat-button' + ($audioState.repeatMode === RepeatMode.Off ? '' : ' enabled')} onClick={handleRepeatMode} title="Repeat">
+        <button className="repeat-button" data-active={$audioState.repeatMode !== RepeatMode.Off} onClick={handleRepeatMode} title="Repeat">
           {$audioState.repeatMode === RepeatMode.RepeatOne ? <BsRepeat1 /> : <BsRepeat />}
         </button>
       </div>

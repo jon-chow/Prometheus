@@ -27,6 +27,17 @@ html {
     line-height: 1.6;
   }
 
+  #root {
+    max-width: 100vw;
+    max-height: 100vh;
+    display: grid;
+    gap: 5px;
+    grid-template:
+      'topbar' 1fr
+      'content' calc(100vh - 55px - 90px)
+      'bottombar' 1fr;
+  }
+
   img {
     height: auto;
     max-width: 100%;

@@ -40,7 +40,7 @@ const BottomBar = ({}: BottomBarProps) => {
       <div className="bottombar">
         <div className="left">
           <div className="art-cover">
-            <img src={$audioState.currentTrack?.thumbnailSource} />
+            <img src={$audioState.currentTrack?.thumbnailSource} alt="thumbnail" />
             <div className="art-cover-overlay">
               <button className="play-button" onClick={handlePlay}>
                 {$audioState.isPlaying ? <BsPauseFill /> : <BsPlayFill />}

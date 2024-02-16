@@ -1,15 +1,14 @@
 .topbar {
   grid-area: topbar;
-  position: sticky;
-  z-index: 100;
-  top: 0;
   display: flex;
+  z-index: 100;
   align-items: center;
-  padding: 5px 1dvw;
-  flex: 1;
-  height: 100%;
+  padding: 10px 1dvw;
+  width: 100%;
+  height: 55px;
   font-size: medium;
   background: var(--primary-darker-color);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   color: white;
 
   .menu-button {
@@ -74,10 +73,10 @@
 
 .modal-wrapper {
   position: absolute;
-  top: 53px;
+  top: 55px;
   left: 0;
   z-index: 100;
-  height: calc(100vh - 53px);
+  height: calc(100vh - 55px);
   width: 100vw;
   display: flex;
   align-items: flex-start;

@@ -33,7 +33,7 @@ const VolumeSlider = ({ audioRef }: Props) => {
   return (
     <>
       <div className="volume" title={`${($audioState.volume * 100).toFixed(0).toString()}%`}>
-        <button className="volume-icon" onClick={handleMute}>
+        <button className="volume-icon" onClick={handleMute} title={$audioState.isMuted ? 'Unmute' : 'Mute'}>
           {$audioState.isMuted ? (
             <IoVolumeMute />
           ) : $audioState.volume === 0 ? (
@@ -48,6 +48,7 @@ const VolumeSlider = ({ audioRef }: Props) => {
         </button>
         <input
           className="volume-bar"
+          role="slider"
           type="range"
           min="0"
           max="100"

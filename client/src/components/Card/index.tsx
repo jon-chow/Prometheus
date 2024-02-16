@@ -1,22 +1,22 @@
-import { BsPlayFill, BsPauseFill } from 'react-icons/bs';
+import { BsPlayFill, BsPauseFill, BsSoundwave } from 'react-icons/bs';
 import { useStore } from '@nanostores/react';
 import { audioStore } from '../../stores/audioStore.store';
 import './Card.scss';
 import type { Track } from '../../classes/implements/Track';
 
-interface Props {
+export interface CardProps {
   track: Track;
   isCurrentTrack?: boolean;
 }
 
-const Card = ({ track, isCurrentTrack }: Props) => {
+const Card = ({ track, isCurrentTrack }: CardProps) => {
   const $audioState = useStore(audioStore);
 
   function convertDate(date: Date) {
     return date.toLocaleDateString('en-US');
   }
 
-  const changeToThisTrack = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const changeToThisTrack = (e: React.MouseEvent) => {
     if (isCurrentTrack) {
       audioStore.setKey('isPlaying', !$audioState.isPlaying);
     } else {
@@ -26,17 +26,20 @@ const Card = ({ track, isCurrentTrack }: Props) => {
     }
   };
 
+  const handleDoubleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    changeToThisTrack(e);
+  }
+
   return (
     <>
-      <div role="listitem" className={'card' + (isCurrentTrack ? ' current' : '')}>
-        <div className="track-number">{track.order + 1}</div>
+      <div className="card" data-current={isCurrentTrack} onDoubleClick={handleDoubleClick}>
+        <div className="track-number">
+          {($audioState.isPlaying && isCurrentTrack) ? <BsSoundwave /> : track.order + 1}
+        </div>
         <div className="main-info">
           <div className="art-cover">
-            <img
-              src={track.thumbnailSource}
-              loading="lazy"
-              decoding="async"
-            />
+            <img src={track.thumbnailSource} loading="lazy" decoding="async" />
             <div className="art-cover-overlay">
               <button className="play-button" onClick={changeToThisTrack}>
                 {isCurrentTrack && $audioState.isPlaying ? <BsPauseFill /> : <BsPlayFill />}

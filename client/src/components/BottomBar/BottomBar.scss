@@ -1,37 +1,35 @@
 .bottombar {
-  position: fixed;
-  box-sizing: content-box;
-  justify-content: space-around;
   grid-area: bottombar;
   display: grid;
-  bottom: 0;
   grid-template-areas: 'left center right';
-  grid-template-columns: calc(25dvw - 2dvi) 50dvw calc(25dvw - 2dvi);
+  grid-template-columns: 1fr 50dvw 1fr;
   align-items: center;
-  flex: 1;
-  height: 10dvb;
+  padding: 10px 2dvw;
   width: 100%;
-  gap: 10px;
+  height: 80px;
+  font-size: medium;
   background: var(--primary-darker-color);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  color: white;
 
   .left,
   .center,
   .right {
     display: flex;
     align-items: center;
-    width: 100%;
-    height: 100%;
     overflow: hidden;
   }
 
   .left {
+    grid-area: left;
     gap: 15px;
-    padding: 0 4dvi 0 2dvi;
 
     .art-cover {
-      position: relative;
-      width: 60px;
-      height: 60px;
+      max-width: 60px;
+      max-height: 60px;
+      min-width: 45px;
+      min-height: 45px;
+      aspect-ratio: 1 / 1;
       border-radius: 6px;
       outline: 1px solid #421a82;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -63,10 +61,8 @@
 
         button {
           display: flex;
-          justify-content: center;
-          align-items: center;
-          width: 100%;
-          height: 100%;
+          justify-self: center;
+          align-self: center;
           border: none;
           background: none;
           color: #fff;
@@ -94,6 +90,7 @@
   }
 
   .center {
+    grid-area: center;
     justify-content: center;
     align-self: center;
 
@@ -138,7 +135,7 @@
           &.shuffle-button,
           &.repeat-button {
             font-size: 1.25rem;
-            &.enabled {
+            &[data-active='true'] {
               color: #7a90ff;
             }
           }
@@ -195,8 +192,8 @@
   }
 
   .right {
+    grid-area: right;
     justify-content: flex-end;
-    padding-right: 2dvi;
     
     .volume {
       display: flex;
