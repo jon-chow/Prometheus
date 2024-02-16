@@ -32,25 +32,29 @@ const AudioContextProvider = ({ children }: PropsWithChildren) => {
   };
 
   const handleNextTrack = () => {
-    if ($audioState.repeatMode === RepeatMode.RepeatOne) {
-      (audioRef.current as HTMLAudioElement).currentTime = 0;
-      return;
-    }
+    try {
+      if ($audioState.repeatMode === RepeatMode.RepeatOne) {
+        (audioRef.current as HTMLAudioElement).currentTime = 0;
+        return;
+      }
 
-    const next = (($audioState.currentTrackIndex ?? -1) + 1) % $audioState.trackList.length;
-    audioStore.setKey('currentTrackIndex', next);
-    audioStore.setKey('currentTrack', $audioState.trackList[next]);
+      const next = (($audioState.currentTrackIndex ?? -1) + 1) % $audioState.trackList.length;
+      audioStore.setKey('currentTrackIndex', next);
+      audioStore.setKey('currentTrack', $audioState.trackList[next]);
+    } catch (error) {}
   };
 
   const handlePrevTrack = () => {
-    if ($audioState.repeatMode === RepeatMode.RepeatOne) {
-      (audioRef.current as HTMLAudioElement).currentTime = 0;
-      return;
-    }
+    try {
+      if ($audioState.repeatMode === RepeatMode.RepeatOne) {
+        (audioRef.current as HTMLAudioElement).currentTime = 0;
+        return;
+      }
 
-    const prev = (($audioState.currentTrackIndex ?? 1) - 1 + $audioState.trackList.length) % $audioState.trackList.length;
-    audioStore.setKey('currentTrackIndex', prev);
-    audioStore.setKey('currentTrack', $audioState.trackList[prev]);
+      const prev = (($audioState.currentTrackIndex ?? 1) - 1 + $audioState.trackList.length) % $audioState.trackList.length;
+      audioStore.setKey('currentTrackIndex', prev);
+      audioStore.setKey('currentTrack', $audioState.trackList[prev]);
+    } catch (error) {}
   };
 
   const handleOnEnded = () => {
@@ -92,13 +96,16 @@ const AudioContextProvider = ({ children }: PropsWithChildren) => {
 
   // Load track list
   useEffect(() => {
+    $audioState.isFetching = true;
     fetchAllTracks().then((tracks) => {
+      audioStore.setKey('isFetching', false);
       audioStore.setKey('trackList', tracks);
     });
   }, []);
 
   // Handle shuffle functionality
   useEffect(() => {
+    if (audioStore.get().trackList === undefined) return;
     if (audioStore.get().isShuffle) {
       const shuffled = audioStore.get().trackList;
       for (let i = shuffled.length - 1; i > 0; i--) {

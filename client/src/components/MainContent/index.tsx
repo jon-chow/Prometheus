@@ -68,9 +68,13 @@ const MainDisplay = ({}: MainContentProps) => {
             <div className="divider" />
           </ul>
           <div className="tracklist">
-            { $audioState.trackList
-              ? $audioState.trackList.map((track, i) => <Card key={track.src}  track={track} isCurrentTrack={$audioState.currentTrackIndex === i} />)
-              : null}
+            {$audioState.isFetching ? (
+              <p>Loading tracks...</p>
+            ) : $audioState.trackList ? (
+              $audioState.trackList.map((track, i) => <Card key={track.src} track={track} isCurrentTrack={$audioState.currentTrackIndex === i} />)
+            ) : (
+              <p>No tracks found</p>
+            )}
           </div>
         </div>
         <div className="resizer" ref={resizerRef} />

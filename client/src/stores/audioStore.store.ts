@@ -6,6 +6,7 @@ import { EMPTY_TRACK } from '../data/tracks';
 
 export const audioStore = map<AudioState>(
   new AudioState({
+    isFetching: false,
     trackList: [],
     currentTrackIndex: null,
     currentTrack: EMPTY_TRACK,

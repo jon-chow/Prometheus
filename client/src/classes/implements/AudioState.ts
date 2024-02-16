@@ -7,6 +7,7 @@ export const RepeatMode = {
 } as const;
 
 export class AudioState implements IAudioState {
+  public isFetching: boolean;
   public trackList: Track[];
   public currentTrackIndex: number | null;
   public currentTrack: Track | null;
@@ -20,6 +21,7 @@ export class AudioState implements IAudioState {
   public isSeeking: boolean;
 
   constructor({
+    isFetching,
     trackList,
     currentTrackIndex,
     currentTrack,
@@ -32,6 +34,7 @@ export class AudioState implements IAudioState {
     isMuted,
     isSeeking
   }: IAudioState) {
+    this.isFetching = isFetching;
     this.trackList = trackList;
     this.currentTrackIndex = currentTrackIndex;
     this.currentTrack = currentTrack;

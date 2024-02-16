@@ -6,6 +6,7 @@ declare const RepeatMode = {
 type RepeatMode = typeof RepeatMode[keyof typeof RepeatMode];
 
 interface IAudioState {
+  isFetching: boolean;
   trackList: Track[];
   currentTrackIndex: number | null;
   currentTrack: Track | null;

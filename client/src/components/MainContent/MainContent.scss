@@ -51,6 +51,14 @@
       overflow-y: auto;
       height: 100%;
       gap: 5px;
+
+      p {
+        font-size: 18pt;
+        padding-top: 1rem;
+        justify-self: center;
+        align-self: center;
+        color: #ccc;
+      }
     }
   }
   
