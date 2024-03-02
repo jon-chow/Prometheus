@@ -134,21 +134,31 @@ const AudioContextProvider = ({ children }: PropsWithChildren) => {
   // Keyboard controls
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      switch (e.key) {
-        case 'ArrowRight':
-          e.preventDefault();
-          handleSeek();
-          break;
-        case 'ArrowLeft':
-          e.preventDefault();
-          handleSeek(-5);
-          break;
-        case ' ':
-          e.preventDefault();
-          handlePlay();
-          break;
-        default:
-          break;
+      if (e.ctrlKey && (e.key === 'ArrowRight' || e.key.toLowerCase() === 'd')) {
+        // Next track
+        e.preventDefault();
+        handleNextTrack();
+        return;
+      } else if (e.ctrlKey && (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'a')) {
+        // Previous track
+        e.preventDefault();
+        handlePrevTrack();
+        return;
+      } else if (e.key === 'ArrowRight' || e.key.toLowerCase() === 'd') {
+        // Seek forward
+        e.preventDefault();
+        handleSeek();
+        return;
+      } else if (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'a') {
+        // Seek back
+        e.preventDefault();
+        handleSeek(-5);
+        return;
+      } else if (e.key === ' ') {
+        // Play/Pause
+        e.preventDefault();
+        handlePlay();
+        return;
       }
     };
 
