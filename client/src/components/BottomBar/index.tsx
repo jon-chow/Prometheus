@@ -33,7 +33,7 @@ const BottomBar = ({}: BottomBarProps) => {
     if (audioRef.current) $audioState.isPlaying ? audioRef.current.play() : audioRef.current.pause();
     playingRef.current = requestAnimationFrame(repeat);
     return () => cancelAnimationFrame(playingRef.current as number);
-  }, [audioRef, $audioState.isPlaying, repeat]);
+  }, [audioRef, $audioState.duration, $audioState.isPlaying, repeat]);
 
   return (
     <>

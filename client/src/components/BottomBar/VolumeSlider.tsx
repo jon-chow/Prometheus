@@ -26,6 +26,10 @@ const VolumeSlider = ({ audioRef }: Props) => {
     audioStore.setKey('volume', parseInt(e.target.value) / 100);
   };
 
+  const handleResetVolume = (e: React.MouseEvent<HTMLButtonElement>) => {
+    audioStore.setKey('volume', 0.5);
+  };
+
   function checkVolume() {
     return $audioState.isMuted ? 0 : $audioState.volume * 100;
   }
@@ -59,6 +63,9 @@ const VolumeSlider = ({ audioRef }: Props) => {
             background: `linear-gradient(to right, #7a90ff ${checkVolume()}%, #aaa ${checkVolume()}%)`
           }}
         />
+        <span className="volume-percentage" title="Click To Reset (50%)" onClick={handleResetVolume}>
+          {($audioState.volume * 100).toFixed(0).toString()}%
+        </span>
       </div>
     </>
   );

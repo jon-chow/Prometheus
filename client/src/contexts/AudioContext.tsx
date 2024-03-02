@@ -41,6 +41,8 @@ const AudioContextProvider = ({ children }: PropsWithChildren) => {
       const next = (($audioState.currentTrackIndex ?? -1) + 1) % $audioState.trackList.length;
       audioStore.setKey('currentTrackIndex', next);
       audioStore.setKey('currentTrack', $audioState.trackList[next]);
+
+      if (!$audioState.isPlaying) audioStore.setKey('isPlaying', true);
     } catch (error) {}
   };
 
@@ -54,6 +56,8 @@ const AudioContextProvider = ({ children }: PropsWithChildren) => {
       const prev = (($audioState.currentTrackIndex ?? 1) - 1 + $audioState.trackList.length) % $audioState.trackList.length;
       audioStore.setKey('currentTrackIndex', prev);
       audioStore.setKey('currentTrack', $audioState.trackList[prev]);
+      
+      if (!$audioState.isPlaying) audioStore.setKey('isPlaying', true);
     } catch (error) {}
   };
 
