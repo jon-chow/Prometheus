@@ -15,6 +15,16 @@ const MainDisplay = ({}: MainContentProps) => {
 
   const $audioState = useStore(audioStore);
 
+  const handleCardDisplay = () => {
+    return $audioState.searchTerm === null || $audioState.searchTerm === ''
+      ? $audioState.trackList.map((track, i) => (
+          <Card key={track.src} track={track} isCurrentTrack={$audioState.currentTrackIndex === $audioState.trackList.indexOf(track)} />
+        ))
+      : $audioState.trackList
+          .filter((track) => track.title.toLowerCase().includes($audioState.searchTerm!.toLowerCase()) || track.author.toLowerCase().includes($audioState.searchTerm!.toLowerCase()))
+          .map((track) => <Card key={track.src} track={track} isCurrentTrack={$audioState.currentTrackIndex === $audioState.trackList.indexOf(track)} />);
+  };
+
   useEffect(() => {
     if (!resizerRef.current) return;
     let x = 0;
@@ -68,13 +78,7 @@ const MainDisplay = ({}: MainContentProps) => {
             <div className="divider" />
           </ul>
           <div className="tracklist">
-            {$audioState.isFetching ? (
-              <p>Loading tracks...</p>
-            ) : $audioState.trackList ? (
-              $audioState.trackList.map((track, i) => <Card key={track.src} track={track} isCurrentTrack={$audioState.currentTrackIndex === i} />)
-            ) : (
-              <p>No tracks found</p>
-            )}
+            {$audioState.isFetching ? <p>Loading tracks...</p> : $audioState.trackList ? handleCardDisplay() : <p>No tracks found</p>}
           </div>
         </div>
         <div className="resizer" ref={resizerRef} />

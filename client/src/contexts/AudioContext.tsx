@@ -134,6 +134,9 @@ const AudioContextProvider = ({ children }: PropsWithChildren) => {
   // Keyboard controls
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore shortcuts if input is focused
+      if (document.activeElement instanceof HTMLInputElement) return;
+
       if (e.ctrlKey && (e.key === 'ArrowRight' || e.key.toLowerCase() === 'd')) {
         // Next track
         e.preventDefault();

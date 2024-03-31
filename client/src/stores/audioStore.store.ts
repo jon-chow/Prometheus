@@ -17,6 +17,7 @@ export const audioStore = map<AudioState>(
     isShuffle: false,
     volume: 0.5,
     isMuted: false,
-    isSeeking: false
+    isSeeking: false,
+    searchTerm: null
   })
 );

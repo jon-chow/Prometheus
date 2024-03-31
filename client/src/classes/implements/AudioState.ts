@@ -19,6 +19,7 @@ export class AudioState implements IAudioState {
   public volume: number;
   public isMuted: boolean;
   public isSeeking: boolean;
+  public searchTerm: string | null;
 
   constructor({
     isFetching,
@@ -32,7 +33,8 @@ export class AudioState implements IAudioState {
     isShuffle,
     volume,
     isMuted,
-    isSeeking
+    isSeeking,
+    searchTerm
   }: IAudioState) {
     this.isFetching = isFetching;
     this.trackList = trackList;
@@ -46,5 +48,6 @@ export class AudioState implements IAudioState {
     this.volume = volume;
     this.isMuted = isMuted;
     this.isSeeking = isSeeking;
+    this.searchTerm = searchTerm;
   }
 }

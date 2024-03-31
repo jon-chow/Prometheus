@@ -18,4 +18,5 @@ interface IAudioState {
   volume: number;
   isMuted: boolean;
   isSeeking: boolean;
+  searchTerm: string | null;
 }

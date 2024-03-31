@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { FaFire, FaBell } from 'react-icons/fa';
+import { FaFire, FaBell, FaSearch } from 'react-icons/fa';
+import { audioStore } from '../../stores/audioStore.store';
 import './TopBar.scss';
 
 import HamburgerMenu from './HamburgerMenu';
@@ -13,6 +14,7 @@ export interface TopBarProps {
 const TopBar = ({ header }: TopBarProps) => {
   const [hamburgerMenuToggled, setHamburgerMenuToggled] = useState(false);
   const [bellMenuToggled, setBellMenuToggled] = useState(false);
+  const [searchToggled, setSearchToggled] = useState(false);
   const hamburgerMenuMounted = useTransition(hamburgerMenuToggled, 250);
   const bellMenuMounted = useTransition(bellMenuToggled, 250);
 
@@ -31,10 +33,18 @@ const TopBar = ({ header }: TopBarProps) => {
     setBellMenuToggled(false);
   };
 
+  const toggleSearch = (e: React.MouseEvent) => {
+    setSearchToggled(!searchToggled);
+  }
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    audioStore.setKey('searchTerm', e.target.value);
+  }
+
   return (
     <>
       <div className="topbar">
-        <div className="menu-button hamburger" onClick={toggleHamburger} data-toggled={hamburgerMenuToggled}>
+        <div className="menu-button hamburger" title="Menu" onClick={toggleHamburger} data-toggled={hamburgerMenuToggled}>
           <div className="bar" />
           <div className="bar" />
           <div className="bar" />
@@ -45,7 +55,13 @@ const TopBar = ({ header }: TopBarProps) => {
           </div>
           <h1>{header}</h1>
         </div>
-        <div className="menu-button bell" onClick={toggleBell}>
+        <div className="search-bar">
+          <input type="text" placeholder="Search..." data-toggled={searchToggled} onChange={handleSearch} />
+          <div className="search-button" title="Search" onClick={toggleSearch}>
+            <FaSearch />
+          </div>
+        </div>
+        <div className="menu-button bell" title="Notifications" onClick={toggleBell}>
           <FaBell />
         </div>
       </div>
