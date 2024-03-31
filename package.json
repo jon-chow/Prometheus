@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"scripts": {
 		"sb": "cd client && pnpm storybook",
+		"e2e": "cd client && pnpm cy:open",
 		"rc": "cd client && pnpm dev",
 		"rs": "cd server && pnpm dev",
 		"dev": "concurrently -kill-others \"pnpm rc\" \"pnpm rs\""

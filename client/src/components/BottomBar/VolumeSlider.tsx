@@ -27,7 +27,7 @@ const VolumeSlider = ({ audioRef }: Props) => {
   };
 
   const handleResetVolume = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if ($audioState.isMuted) $audioState.isMuted = false;
+    audioStore.setKey('isMuted', false);
     audioStore.setKey('volume', 0.5);
   };
 
