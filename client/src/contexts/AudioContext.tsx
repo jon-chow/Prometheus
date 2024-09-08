@@ -190,6 +190,7 @@ const AudioContextProvider = ({ children }: PropsWithChildren) => {
         <audio
           src={$audioState.currentTrack?.src}
           ref={audioRef}
+          crossOrigin="anonymous"
           preload="metadata"
           onLoadedMetadata={onLoadedMetadata}
           onEnded={(e) => handleOnEnded()}
